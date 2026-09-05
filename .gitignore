@@ -1,0 +1,12 @@
+﻿_site/
+.cache/
+node_modules/
+.env
+.env.*
+*.rbxl
+*.rbxm
+*.rbxlx
+*.rbxmx
+/product-files/
+.DS_Store
+Thumbs.db
