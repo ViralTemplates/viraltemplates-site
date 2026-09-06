@@ -42,17 +42,7 @@ await sharp("MainVTLogo.png").resize({ width: 160 }).webp({ quality: 92, alphaQu
   .toFile(path.join(OUT, "vt-logo.webp"));
 console.log("MainVTLogo.png -> vt-logo.{png,webp}");
 
-// Favicon source at a couple of raster sizes (VT mark on brand blue field).
-for (const size of [180, 32]) {
-  await sharp(await sharp("MainVTLogo.png").resize({
-      width: Math.round(size * 0.78), fit: "contain",
-      background: { r: 0, g: 0, b: 0, alpha: 0 },
-    }).toBuffer())
-    .extend({ top: 0, bottom: 0, left: 0, right: 0 })
-    .flatten({ background: "#1246F2" })
-    .resize(size, size, { fit: "contain", background: "#1246F2" })
-    .png()
-    .toFile(path.join(OUT, size === 180 ? "apple-touch-icon.png" : "favicon-32.png"));
-}
-console.log("MainVTLogo.png -> apple-touch-icon.png, favicon-32.png");
+// Favicons are generated separately by tools/build-favicons.mjs from the nav
+// logo file (src/assets/img/vt-logo.png), not from the archived master.
+
 

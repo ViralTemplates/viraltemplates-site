@@ -777,7 +777,9 @@ main,
 /* Shine sweep. Fires once per hover — it is a transition on a pseudo-element,
    not a looping animation, so it cannot repeat while the pointer rests. */
 .btn--primary::after,
-.btn--cyan::after {
+.btn--cyan::after,
+.btn--robux::after,
+.btn--crypto::after {
   content: "";
   position: absolute;
   top: -50%;
@@ -796,7 +798,9 @@ main,
 }
 
 .btn--primary:hover::after,
-.btn--cyan:hover::after {
+.btn--cyan:hover::after,
+.btn--robux:hover::after,
+.btn--crypto:hover::after {
   transform: translateX(320%) skewX(-18deg);
 }
 
@@ -810,6 +814,41 @@ main,
   background: var(--brand-cyan-hover);
   color: var(--base);
   transform: translateY(-2px);
+}
+
+/* Robux and Crypto fills. Same geometry as the primary (the .btn base sets
+   padding, radius and size; btn--block sets width); --base text on both, since
+   the ramps are light. Measured at each ramp's DARKEST stop:
+   #22C55E 8.61:1, #D9962B 7.80:1. */
+.btn--robux {
+  background: linear-gradient(135deg, #22c55e 0%, #4ade80 100%);
+  color: var(--base);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.28) inset, 0 4px 16px rgba(34, 197, 94, 0.3);
+}
+
+.btn--robux:hover {
+  background: linear-gradient(120deg, #22c55e 0%, #4ade80 100%);
+  color: var(--base);
+  transform: translateY(-2px);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.28) inset, 0 10px 28px rgba(34, 197, 94, 0.45);
+}
+
+.btn--crypto {
+  background: linear-gradient(135deg, #d9962b 0%, #f5c542 100%);
+  color: var(--base);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.28) inset, 0 4px 16px rgba(217, 150, 43, 0.3);
+}
+
+.btn--crypto:hover {
+  background: linear-gradient(120deg, #d9962b 0%, #f5c542 100%);
+  color: var(--base);
+  transform: translateY(-2px);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.28) inset, 0 10px 28px rgba(217, 150, 43, 0.45);
+}
+
+.btn--robux:active,
+.btn--crypto:active {
+  transform: translateY(0);
 }
 
 .btn--ghost {
@@ -2880,13 +2919,17 @@ html.js .reveal.is-in {
 
   /* No sweep, no lift. */
   .btn--primary::after,
-  .btn--cyan::after {
+  .btn--cyan::after,
+  .btn--robux::after,
+  .btn--crypto::after {
     display: none;
   }
 
   .btn--primary:hover,
   .btn--ghost:hover,
   .btn--cyan:hover,
+  .btn--robux:hover,
+  .btn--crypto:hover,
   .stat:hover,
   .pcard:hover {
     transform: none;

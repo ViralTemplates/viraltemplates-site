@@ -114,8 +114,9 @@ if (flat(page(tos)).includes("Last updated")) { console.log("  x 'Last updated' 
 else console.log("  . no 'Last updated' line");
 
 console.log("\nCONTACT (contact/index.html)");
-check("contact/index.html", "Not sure which one fits your game?", "h1");
-check("contact/index.html", "Ask us and we'd be more than happy to help select the right one for you.", "sub");
+check("contact/index.html", "Need to contact us?", "h1");
+if (flat(page("contact/index.html")).includes("Ask us and we'd be more than happy")) { console.log("  x removed contact sub-line still present"); fail++; }
+else console.log("  . removed contact sub-line is gone");
 check("contact/index.html", "Or get an answer faster", "secondary label");
 
 console.log("\nFOOTER");

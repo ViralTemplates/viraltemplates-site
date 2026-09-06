@@ -4,6 +4,8 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/assets/js");
   eleventyConfig.addPassthroughCopy("src/assets/css");
   eleventyConfig.addPassthroughCopy({ CNAME: "CNAME" });
+  // Browsers request /favicon.ico by convention, so the same file also lives at the root.
+  eleventyConfig.addPassthroughCopy({ "src/assets/img/favicon.ico": "favicon.ico" });
 
   eleventyConfig.addWatchTarget("src/assets/");
 

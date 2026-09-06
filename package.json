@@ -16,7 +16,8 @@
     "verify": "npm run build && npm run check",
     "check:gates": "node tools/check-the-checks.mjs",
     "ratings": "node tools/audit-ratings.mjs",
-    "contrast": "node tools/contrast.mjs"
+    "contrast": "node tools/contrast.mjs",
+    "favicons": "node tools/build-favicons.mjs"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.0.0",

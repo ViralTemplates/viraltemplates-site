@@ -25,10 +25,16 @@
 <meta name="twitter:title" content="{{ title }}">
 <meta name="twitter:description" content="{{ description }}">
 <meta name="twitter:image" content="{{ ogImage }}">
-<meta name="theme-color" content="#070b18">
+<meta name="theme-color" content="#070B18">
 
+{#- Every icon is generated from the nav logo's own file by
+    tools/build-favicons.mjs, composited on --base so it reads on light and
+    dark tab bars. favicon.ico is also copied to the site root for browsers
+    that request /favicon.ico without reading the page. #}
+<link rel="icon" href="/favicon.ico" sizes="16x16 32x32" type="image/x-icon">
 <link rel="icon" href="/assets/img/favicon-32.png" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<link rel="icon" href="/assets/img/favicon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png" sizes="180x180">
 
 <link rel="preload" href="/assets/fonts/Outfit-Variable.woff2" as="font" type="font/woff2" crossorigin>
 
