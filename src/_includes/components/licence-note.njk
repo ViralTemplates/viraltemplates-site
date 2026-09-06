@@ -1,0 +1,5 @@
+{#- The one place the licence cap is worded, so no two pages can disagree.
+    Renders only when licensesRemaining is set. Expects `product`. -#}
+{%- if product.licensesRemaining != null %}
+<p class="licence-note">Limited licence run · <span class="num">{{ product.licensesRemaining }}</span> remaining</p>
+{%- endif %}

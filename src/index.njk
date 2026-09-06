@@ -1,0 +1,156 @@
+---
+layout: layouts/base.njk
+permalink: /
+title: "Roblox Game Templates & Asset Packs · Viral Templates"
+description: "Premium Roblox game templates and asset packs, ready to publish: clean code, polished UI, and the systems you would otherwise spend weeks rebuilding."
+hasMarquee: true
+hasFaq: true
+hasStats: true
+faq:
+  - q: "Can I customise the template?"
+    a: "Yes. All templates are fully customizable in Roblox Studio. You can change assets, UI, scripts, and scale systems to fit your specific needs for your game."
+  - q: "I've never released a game before, will I be able to use this template?"
+    a: "Absolutely. Whether you're new to Roblox development or experienced, the template is clean, organised, and easy to work with."
+  - q: "What happens after I purchase a template?"
+    a: "You get instant access to the template after checkout. Download it, open it in Roblox Studio, and release it within a matter of minutes."
+---
+
+<section class="hero">
+  <div class="well">
+    <div class="hero__inner">
+      <h1 class="display">
+        Premium Roblox templates
+        <span class="display__grad">&amp; assets, ready to go.</span>
+      </h1>
+      <p class="hero__sub">
+        High-quality, pre-made game templates and assets inspired by current trending and
+        viral Roblox games.
+      </p>
+
+      <div class="btn-row hero__actions">
+        <a class="btn btn--primary btn--lg" href="/templates/">
+          Browse the collection
+          <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M2 8h11M9 4l4 4-4 4"/>
+          </svg>
+        </a>
+        <a class="btn btn--ghost btn--lg" href="{{ site.discord }}" rel="noopener" target="_blank">
+          Join the Discord
+        </a>
+      </div>
+
+      <div class="hero__meta">
+        {% set fillPercent = (stats.averageOutOf5 / 5 * 100) | round %}
+        {% include "components/stars.njk" %}
+        <span class="rating__num"><span class="num">{{ stats.averageOutOf5 }}</span> out of 5 from <span class="num">{{ stats.reviewCount }}</span> reviews</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="hairline">
+
+<section class="section" aria-labelledby="why-title">
+  <div class="well">
+    <div class="section-head section-head--center">
+      <h2 class="h2" id="why-title">Tired of rebuilding the same systems again?</h2>
+      <p class="sub">
+        Every template ships ready to publish. Clean code, polished UI, and the systems
+        you'd otherwise spend weeks rebuilding.
+      </p>
+    </div>
+
+    <div class="wgrid">
+      <div class="wcard reveal">
+        <h3 class="wcard__title">Built for success</h3>
+        <p class="wcard__body">
+          With 5+ years of Roblox development experience, we know what current trends look
+          like and what makes games reach the front page.
+        </p>
+      </div>
+      <div class="wcard reveal">
+        <h3 class="wcard__title">Built for efficiency</h3>
+        <p class="wcard__body">
+          Stop wasting weeks rebuilding the basics. Our templates are ready to launch in
+          minutes, so you can focus on reaching the algorithm.
+        </p>
+      </div>
+      <div class="wcard reveal">
+        <h3 class="wcard__title">Built for affordability</h3>
+        <p class="wcard__body">
+          Premium quality templates without premium agency pricing. Professional results
+          at a price that actually makes sense for indie developers.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--flush-top" aria-label="Store facts">
+  <div class="well">
+    {% include "components/stats.njk" %}
+  </div>
+</section>
+
+<section class="section" aria-labelledby="collection-title">
+  <div class="well">
+    <div class="section-head">
+      <h2 class="h2" id="collection-title">Browse the collection.</h2>
+      <p class="sub">
+        Production-ready templates and asset packs, fully scripted and supported.
+        More dropping soon, keep an eye out.
+      </p>
+    </div>
+
+    {%- set gridProducts = products | byOrder %}
+    {% include "components/product-grid.njk" %}
+  </div>
+</section>
+
+<section class="section section--flush-top" id="reviews" aria-labelledby="reviews-title">
+  <div class="well">
+    <div class="section-head">
+      <h2 class="h2" id="reviews-title">What Roblox developers said after buying</h2>
+      <div class="rating" style="margin-top: var(--s-5)">
+        {% set fillPercent = (stats.averageOutOf5 / 5 * 100) | round %}
+        {% include "components/stars.njk" %}
+        <span class="rating__num">
+          <span class="num">{{ stats.averageOutOf5 }}</span> out of 5 across
+          <span class="num">{{ stats.ratedCount }}</span> rated reviews
+        </span>
+      </div>
+    </div>
+  </div>
+
+  {#- The marquee carries all 35 reviews, tier 3 then tier 2 then tier 1, so
+      every review is in the DOM exactly once and the reviewCount in the
+      AggregateRating matches what is actually on the page. -#}
+  {%- set marqueeReviews = (reviews | whereTier(3)) | concatList(reviews | whereTier(2)) | concatList(reviews | whereTier(1)) %}
+  {% include "components/reviews-marquee.njk" %}
+</section>
+
+<section class="section" aria-labelledby="faq-title">
+  <div class="well">
+    <div class="section-head">
+      <h2 class="h2" id="faq-title">Questions people ask before buying</h2>
+    </div>
+    {% set items = faq %}
+    {% include "components/faq.njk" %}
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="well">
+    <div class="cta-band__inner">
+      <div>
+        <h2 class="h2">Pick a product and get building</h2>
+        <p>A range of products, all professionally built, downloadable immediately.</p>
+      </div>
+      <div class="btn-row">
+        <a class="btn btn--primary btn--lg" href="/templates/">See all three</a>
+        <a class="btn btn--ghost btn--lg" href="{{ site.discord }}" rel="noopener" target="_blank">Join the Discord</a>
+      </div>
+    </div>
+  </div>
+</section>

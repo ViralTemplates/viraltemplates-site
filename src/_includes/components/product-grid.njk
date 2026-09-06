@@ -1,0 +1,16 @@
+{#- The product grid, with its empty state. Expects `gridProducts`. -#}
+{%- if gridProducts | length %}
+<div class="pgrid">
+  {%- for product in gridProducts %}
+  {% set priority = loop.first %}
+  {% include "components/product-card.njk" %}
+  {%- endfor %}
+</div>
+{%- else %}
+<div class="pgrid-empty">
+  <p>No templates live right now. New releases are announced in the Discord first.</p>
+  <a class="btn btn--ghost" href="{{ site.discord }}" rel="noopener" target="_blank">
+    Join the Discord for release news
+  </a>
+</div>
+{%- endif %}

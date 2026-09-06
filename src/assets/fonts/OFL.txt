@@ -1,0 +1,11 @@
+Outfit — Copyright (c) 2021 The Outfit Project Authors
+  https://github.com/Outfitio/Outfit-Fonts
+Montserrat — Copyright (c) 2011 The Montserrat Project Authors
+  https://github.com/JulietaUla/Montserrat
+
+Both are licensed under the SIL Open Font License, Version 1.1.
+Full text: https://scripts.sil.org/OFL
+
+The OFL permits these fonts to be used, studied, modified and redistributed
+freely, including bundled with and served by a website, provided they are not
+sold on their own and the reserved names are not used by derivative works.

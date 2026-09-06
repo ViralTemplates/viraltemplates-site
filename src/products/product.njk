@@ -1,0 +1,122 @@
+---
+layout: layouts/base.njk
+pagination:
+  data: products
+  size: 1
+  alias: product
+permalink: "/{{ product.slug }}/"
+hasFaq: true
+eleventyComputed:
+  title: "{{ product.seoTitle }}"
+  description: "{{ product.seoDescription }}"
+---
+
+{#- No breadcrumb row on the page; the BreadcrumbList JSON-LD in base.njk stays. -#}
+<section class="section" style="padding-bottom: var(--s-16)">
+  <div class="well">
+    <div class="pd__hero">
+      <div class="page-head">
+        <h1 class="pd__title">{{ product.name }}</h1>
+        <p class="pd__lead">{{ product.tagline }}</p>
+      </div>
+      {% include "components/gallery.njk" %}
+    </div>
+
+    <div class="pd">
+      <div class="pd__main">
+        <div class="section-head" style="margin-bottom: 0">
+          <h2 class="h2" id="ship-title">Everything you need to ship.</h2>
+        </div>
+        <div class="fgroups">
+          {%- for feature in product.features %}
+          <div class="fgroup reveal">
+            <div class="fgroup__head">
+              <h3 class="fgroup__title">{{ feature.title }}</h3>
+            </div>
+            <p class="fgroup__body">{{ feature.body }}</p>
+          </div>
+          {%- endfor %}
+        </div>
+
+        <ul class="ticks" style="justify-content: center">
+          {%- for tick in ["Instant download", "24/7 support", "Ready to publish"] %}
+          <li>
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 8.5l3.5 3.5L13 5"/>
+            </svg>
+            {{ tick }}
+          </li>
+          {%- endfor %}
+        </ul>
+
+        {%- if product.includes | length %}
+        <div class="section-head" style="margin-top: var(--s-16); margin-bottom: 0">
+          <h2 class="h2" id="includes-title">What's in the {{ product.name }}</h2>
+        </div>
+        <div class="fgroups">
+          {%- for group in product.includes %}
+          <div class="fgroup reveal">
+            <div class="fgroup__head">
+              <span class="fgroup__emoji" aria-hidden="true">{{ group.emoji }}</span>
+              <h3 class="fgroup__title">{{ group.category }}</h3>
+            </div>
+            <ul class="fgroup__items">
+              {%- for item in group.items %}
+              <li>{{ item }}</li>
+              {%- endfor %}
+            </ul>
+          </div>
+          {%- endfor %}
+        </div>
+        {%- endif %}
+      </div>
+
+      <aside class="pd__side" data-buybar-anchor>
+        {% include "components/buy-panel.njk" %}
+      </aside>
+    </div>
+  </div>
+</section>
+
+{#- Own-product reviews only, tier 3 first, at most six. A product with none
+    gets no section: no heading, no empty state. -#}
+{%- set productReviews = reviews | reviewsFor(product.slug) %}
+{%- if productReviews | length %}
+<section class="section section--flush-top" aria-labelledby="product-reviews">
+  <div class="well">
+    <div class="section-head">
+      <h2 class="h2" id="product-reviews">Reviews from people who bought this</h2>
+      <p class="sub">Reproduced exactly as written.</p>
+    </div>
+
+    <div class="reviews-grid reviews-grid--3">
+      {%- for review in productReviews %}
+      {% set large = false %}
+      {% set reveal = true %}
+      {% include "components/review-card.njk" %}
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+{%- endif %}
+
+<section class="section section--flush-top" aria-labelledby="product-faq">
+  <div class="well">
+    <div class="section-head">
+      <h2 class="h2" id="product-faq">Have any questions?</h2>
+    </div>
+    {% set items = product.faq %}
+    {% include "components/faq.njk" %}
+
+    <div class="shipcta">
+      <h2 class="h2">Ready to take your game to the next level?</h2>
+      <p>{{ product.shipCta }}</p>
+      {% set block = false %}
+      {% set size = "lg" %}
+      {% include "components/buy-button.njk" %}
+    </div>
+  </div>
+</section>
+
+{% include "components/buy-bar.njk" %}

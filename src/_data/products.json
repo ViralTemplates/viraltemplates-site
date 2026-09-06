@@ -1,0 +1,331 @@
+[
+  {
+    "slug": "essential-cartoon-ui",
+    "order": 1,
+    "name": "Essential Cartoon UI Pack",
+    "tagline": "A complete pack of bold, cartoon-styled UI elements. Buttons, menus, frames, and HUD components. White panels and heavy outlines that hold up against bright, colourful Roblox maps.",
+    "seoTitle": "Cartoon Roblox UI Pack: 11+ Systems · Essential Cartoon",
+    "seoDescription": "White-panel cartoon UI for Roblox: shop selling gamepasses and dev products, daily and playtime rewards, prize wheel, codes, and ProfileStore-backed saving.",
+    "priceNow": 19.99,
+    "priceWas": 49.99,
+    "payhipId": "0hoa7",
+    "payhipUrl": "https://payhip.com/b/0hoa7",
+    "status": "live",
+    "badge": {
+      "label": "NEW",
+      "tone": "red"
+    },
+    "licensesRemaining": null,
+    "video": "oZeLbBWBob0",
+    "shipCta": "Stop rebuilding the basics. Get a production-ready asset pack and focus on what makes your game stand out.",
+    "images": [
+      {
+        "src": "essential-cartoon-ui-1",
+        "width": 1920,
+        "height": 1080,
+        "alt": "Essential Cartoon UI Pack overview: a white-panelled Shop with VIP, Teleporter and x2 Speed gamepasses at 29 Robux plus 1K Cash and 100K Cash developer products, a Settings panel with music and SFX volume sliders, a seven-day Daily Rewards grid, a five-segment prize wheel and a Codes redeem box."
+      },
+      {
+        "src": "essential-cartoon-ui-2",
+        "width": 1920,
+        "height": 1080,
+        "alt": "Cartoon Shop, Time Rewards, prize wheel and Codes frames at full size: thick black outlines on white panels, wheel segments for Mythical Gift, Rocket Ride, Free Cookie, 1K Cash and x10 Luck, with Buy x2, Spin (x30) and Buy x5 controls below a spin countdown."
+      },
+      {
+        "src": "essential-cartoon-ui-3",
+        "width": 1920,
+        "height": 1080,
+        "alt": "Cartoon Settings panel with music and SFX volume sliders next to the group Rewards frame showing a claimed +10,000 cash and cat pet bundle, and the seven-day Daily Rewards grid with day one ready to claim."
+      }
+    ],
+    "includes": [
+      {
+        "category": "Monetization Systems",
+        "emoji": "💰",
+        "items": [
+          "Complete Robux Shop",
+          "Gamepasses with gifting support",
+          "Developer Products with gifting support",
+          "Packs System"
+        ]
+      },
+      {
+        "category": "Reward & Retention",
+        "emoji": "🎁",
+        "items": [
+          "Daily Login Rewards",
+          "Playtime Rewards",
+          "Group Reward System",
+          "Wheel Spin System",
+          "Free Spin Countdown",
+          "Purchasable Extra Spins"
+        ]
+      },
+      {
+        "category": "Engagement",
+        "emoji": "🎟️",
+        "items": [
+          "Redeemable Codes System",
+          "Top Players Leaderboard",
+          "Side Promotions System",
+          "Animated Notification System"
+        ]
+      },
+      {
+        "category": "Player Experience",
+        "emoji": "⚙️",
+        "items": [
+          "Animated Loading Screen with skip button",
+          "Settings Menu",
+          "Music & SFX volume sliders",
+          "Background Music System",
+          "Cash gain & loss animations",
+          "Prompt UI effects",
+          "Purchase celebration confetti",
+          "Fully animated buttons & frames"
+        ]
+      },
+      {
+        "category": "Backend & Administration",
+        "emoji": "🛡️",
+        "items": [
+          "Secure data saving powered by ProfileStore",
+          "Admin commands (GiveCash, GivePack, GivePass, GiveProducts)"
+        ]
+      }
+    ],
+    "features": [
+      {
+        "title": "Clean, modular code",
+        "body": "Server-authoritative architecture with commented Luau. Easy to extend, easy to learn from."
+      },
+      {
+        "title": "Polished UI",
+        "body": "Pre-built menus, HUDs, and reward screens. Drop in your branding and you're done."
+      },
+      {
+        "title": "Launch in minutes",
+        "body": "Open in Studio, drop the frames into your game, hit publish. No setup grind, no rewriting."
+      },
+      {
+        "title": "Built for retention",
+        "body": "Reward loops, progression systems, and monetization hooks"
+      }
+    ],
+    "faq": [
+      {
+        "q": "Can I customise the pack?",
+        "a": "Yes. The pack is fully customisable in Roblox Studio, assets, UI, scripts, and theming all editable to fit your specific game."
+      },
+      {
+        "q": "I've never released a game before, will I be able to use this?",
+        "a": "Absolutely. The code is clean, organised, and well-commented, designed to be approachable for new developers and useful for experienced ones."
+      },
+      {
+        "q": "What happens after I purchase?",
+        "a": "You get instant access to download the pack. Open it in Roblox Studio, customise to taste, and you can have it in your game in minutes."
+      }
+    ]
+  },
+  {
+    "slug": "essential-stud-ui",
+    "order": 2,
+    "name": "Essential Stud UI Pack",
+    "tagline": "A complete pack of clean, customizable UI elements. Buttons, menus, frames, and HUD components. Drop into any Roblox game and restyle in minutes for a polished, professional look.",
+    "seoTitle": "Roblox UI Pack: 11+ Scripted Systems · Essential Stud UI",
+    "seoDescription": "Eleven scripted frames and a HUD for Roblox: gamepass shop with gifting, daily logins, playtime rewards, wheel spins and codes, all saved through ProfileStore.",
+    "priceNow": 19.99,
+    "priceWas": 49.99,
+    "payhipId": "qSt5A",
+    "payhipUrl": "https://payhip.com/b/qSt5A",
+    "status": "live",
+    "badge": {
+      "label": "Most popular",
+      "tone": "green"
+    },
+    "licensesRemaining": null,
+    "video": "Sr4az8oarK0",
+    "shipCta": "Stop rebuilding the basics. Get a production-ready asset pack and focus on what makes your game stand out.",
+    "images": [
+      {
+        "src": "essential-stud-ui-1",
+        "width": 1920,
+        "height": 1080,
+        "alt": "Essential Stud UI Pack overview: a Shop frame listing VIP, Teleporter and x2 Speed gamepasses with Robux prices, a Settings panel with music and SFX sliders, a seven-day Daily Rewards grid, a five-segment cash wheel with paid spin buttons, a Time Rewards frame and a Codes redeem box."
+      },
+      {
+        "src": "essential-stud-ui-2",
+        "width": 1920,
+        "height": 1080,
+        "alt": "Nine of the pack's frames shown full size: Shop gamepasses, the group Rewards popup offering +10,000 cash and a pet, Codes, Settings sliders, Daily Rewards counting down to day two, the free-spin wheel with 29/59/99 Robux extra-spin buttons, staggered Time Rewards claims, and the HUD with its side buttons and +1,500 / -1,500 cash counter."
+      },
+      {
+        "src": "essential-stud-ui-3",
+        "width": 1920,
+        "height": 1080,
+        "alt": "Essential UI Pack title card on the pack's cartoon sky and tiled-floor background, showing the 5,000 Robux and $19.99 price."
+      }
+    ],
+    "includes": [
+      {
+        "category": "Monetization Systems",
+        "emoji": "💰",
+        "items": [
+          "Complete Robux Shop",
+          "Gamepasses with gifting support",
+          "Developer Products with gifting support",
+          "Packs System"
+        ]
+      },
+      {
+        "category": "Reward & Retention",
+        "emoji": "🎁",
+        "items": [
+          "Daily Login Rewards",
+          "Playtime Rewards",
+          "Group Reward System",
+          "Wheel Spin System",
+          "Free Spin Countdown",
+          "Purchasable Extra Spins"
+        ]
+      },
+      {
+        "category": "Engagement",
+        "emoji": "🎟️",
+        "items": [
+          "Redeemable Codes System",
+          "Top Players Leaderboard",
+          "Side Promotions System",
+          "Animated Notification System"
+        ]
+      },
+      {
+        "category": "Player Experience",
+        "emoji": "⚙️",
+        "items": [
+          "Animated Loading Screen with skip button",
+          "Settings Menu",
+          "Music & SFX volume sliders",
+          "Background Music System",
+          "Cash gain & loss animations",
+          "Prompt UI effects",
+          "Purchase celebration confetti",
+          "Fully animated buttons & frames"
+        ]
+      },
+      {
+        "category": "Backend & Administration",
+        "emoji": "🛡️",
+        "items": [
+          "Secure data saving powered by ProfileStore",
+          "Admin commands (GiveCash, GivePack, GivePass, GiveProducts)"
+        ]
+      }
+    ],
+    "features": [
+      {
+        "title": "Clean, modular code",
+        "body": "Server-authoritative architecture with commented Luau. Easy to extend, easy to learn from."
+      },
+      {
+        "title": "Polished UI",
+        "body": "Pre-built menus, HUDs, and reward screens. Drop in your branding and you're done."
+      },
+      {
+        "title": "Launch in minutes",
+        "body": "Open in Studio, drop the frames into your game, hit publish. No setup grind, no rewriting."
+      },
+      {
+        "title": "Built for retention",
+        "body": "Reward loops, progression systems, and monetization hooks"
+      }
+    ],
+    "faq": [
+      {
+        "q": "Can I customise the pack?",
+        "a": "Yes. The pack is fully customisable in Roblox Studio, assets, UI, scripts, and theming all editable to fit your specific game."
+      },
+      {
+        "q": "I've never released a game before, will I be able to use this?",
+        "a": "Absolutely. The code is clean, organised, and well-commented, designed to be approachable for new developers and useful for experienced ones."
+      },
+      {
+        "q": "What happens after I purchase?",
+        "a": "You get instant access to download the pack. Open it in Roblox Studio, customise to taste, and you can have it in your game in minutes."
+      }
+    ]
+  },
+  {
+    "slug": "jump-for-template",
+    "order": 3,
+    "name": "Jump For ___ Template",
+    "tagline": "This premium Roblox game template gives you a complete, ready to use game structure, consisting of core scripts, a fully built map, and polished UI, all designed for smooth gameplay and strong player retention.",
+    "seoTitle": "Jump For ___ Roblox Obby Template · Ready to Publish",
+    "seoDescription": "A complete Jump For ___ place file: obby course, claimable base plots, reward screens and modular server-authoritative Luau. Open in Studio, reskin, publish.",
+    "priceNow": 79.99,
+    "priceWas": 199.99,
+    "payhipId": "S7HMp",
+    "payhipUrl": "https://payhip.com/b/S7HMp",
+    "status": "live",
+    "badge": {
+      "label": "Low Stock",
+      "tone": "orange"
+    },
+    "licensesRemaining": 5,
+    "video": null,
+    "shipCta": "Stop rebuilding the basics. Get a production-ready template and focus on what makes your game stand out.",
+    "images": [
+      {
+        "src": "jump-for-template-1",
+        "width": 1920,
+        "height": 1080,
+        "alt": "The Jump For ___ obby course seen from spawn: green studded terrain and brick towers, a checkered climb wall, a spinning spiked log across the path and karts queued on the ramp below."
+      },
+      {
+        "src": "jump-for-template-2",
+        "width": 1920,
+        "height": 1080,
+        "alt": "A row of claimable base plots, the nearest with an overhead sign reading \"ThirstyEspresso's Base: Cash Multiplier: 2x\" above rows of kart pads; the plots behind it read \"Empty Base\"."
+      },
+      {
+        "src": "jump-for-template-3",
+        "width": 1920,
+        "height": 1080,
+        "alt": "A player carrying a question-mark block gets clipped by a spinning spiked log on a blue studded platform, with green chevron speed boosters set into the wall behind."
+      }
+    ],
+    "includes": [],
+    "features": [
+      {
+        "title": "Clean, modular code",
+        "body": "Server-authoritative architecture with commented Luau. Easy to extend, easy to learn from."
+      },
+      {
+        "title": "Polished UI",
+        "body": "Pre-built menus, HUDs, and reward screens. Drop in your branding and you're done."
+      },
+      {
+        "title": "Launch in minutes",
+        "body": "Open in Studio, replace placeholder assets, hit publish. No setup grind, no rewriting."
+      },
+      {
+        "title": "Built for retention",
+        "body": "Reward loops, progression systems, and monetization hooks"
+      }
+    ],
+    "faq": [
+      {
+        "q": "Can I customise the template?",
+        "a": "Yes. The template is fully customisable in Roblox Studio, assets, UI, scripts, and progression all editable to fit your specific game."
+      },
+      {
+        "q": "I've never released a game before, will I be able to use this?",
+        "a": "Absolutely. The code is clean, organised, and well-commented, designed to be approachable for new developers and useful for experienced ones."
+      },
+      {
+        "q": "What happens after I purchase?",
+        "a": "You get instant access to download the template. Open it in Roblox Studio, customise to taste, and you can have it live in minutes."
+      }
+    ]
+  }
+]

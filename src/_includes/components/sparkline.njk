@@ -1,0 +1,21 @@
+{#- Decorative rising curve for the tall stat card, drawn by spark.js from the
+    single pure function y(x) = 0.18 + 0.74 * x^2.2. The d attributes here are
+    the p = 1 state from src/_data/spark.js, so the chart is complete without
+    JS; the script redraws every frame from one tipX. Ornament only. -#}
+<div class="spark" data-spark aria-hidden="true">
+  <svg class="spark__svg" viewBox="0 0 300 100" preserveAspectRatio="none" focusable="false">
+    <defs>
+      <linearGradient id="sparkStroke" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="300" y2="0">
+        <stop offset="0%" stop-color="#1246F2"/>
+        <stop offset="100%" stop-color="#1CD1FC"/>
+      </linearGradient>
+      <linearGradient id="sparkFill" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#1CD1FC" stop-opacity="0.22"/>
+        <stop offset="100%" stop-color="#1CD1FC" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <path class="spark__area" data-spark-area d="{{ spark.area }}"/>
+    <path class="spark__line" data-spark-line d="{{ spark.line }}"/>
+  </svg>
+  <span class="spark__dot" data-spark-dot style="left: {{ spark.dotLeft }}%; bottom: {{ spark.dotBottom }}%"></span>
+</div>

@@ -1,0 +1,52 @@
+---
+layout: layouts/base.njk
+permalink: /templates/
+title: "All Roblox Templates & Asset Packs · Viral Templates"
+description: "Every Roblox game template and asset pack we've built: fully scripted, production-ready, and inspired by current trending games. New drops added regularly."
+---
+
+<section class="section section--tall" style="padding-bottom: var(--s-12)">
+  <div class="well">
+    <div class="page-head">
+    <h1 class="display">The full collection.</h1>
+    <p class="hero__sub">
+      Every template and asset pack we've built, fully scripted, production-ready, and
+      inspired by current trending Roblox games. New drops added regularly.
+    </p>
+    </div>
+
+    <div class="rating" style="margin-top: var(--s-8); justify-content: center">
+      {% set fillPercent = (stats.averageOutOf5 / 5 * 100) | round %}
+      {% include "components/stars.njk" %}
+      <span class="rating__num"><span class="num">{{ stats.averageOutOf5 }}</span> out of 5 from <span class="num">{{ stats.ratedCount }}</span> rated reviews</span>
+    </div>
+  </div>
+</section>
+
+<hr class="hairline">
+
+<section class="section" aria-labelledby="all-products">
+  <div class="well">
+    <div class="section-head">
+      <h2 class="h2" id="all-products">Every game template and asset pack we sell</h2>
+    </div>
+
+    {%- set gridProducts = products | byOrder %}
+    {% include "components/product-grid.njk" %}
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="well">
+    <div class="cta-band__inner">
+      <div>
+        <h2 class="h2">Not sure which one fits your game?</h2>
+        <p>Ask in the Discord before you buy. Screenshots of your game get you a straighter answer than this page can.</p>
+      </div>
+      <div class="btn-row">
+        <a class="btn btn--primary btn--lg" href="{{ site.discord }}" rel="noopener" target="_blank">Join the Discord</a>
+        <a class="btn btn--ghost btn--lg" href="/contact/">Send a message instead</a>
+      </div>
+    </div>
+  </div>
+</section>

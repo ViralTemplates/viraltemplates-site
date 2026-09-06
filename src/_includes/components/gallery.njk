@@ -1,0 +1,90 @@
+{#- Product media carousel. The dots are a real tablist with roving tabindex
+    and aria-selected; exactly one dot is in the tab order; the arrows sit
+    OUTSIDE the aria-hidden slide region.
+
+    When the product has a video it is slide 1: a plain youtube-nocookie
+    <iframe>, standard player, the visitor presses YouTube's own play. The
+    carousel timer does not run while that slide is active. Inactive slides
+    are `inert`, so the iframe can never be reached by tab while its slide is
+    hidden.
+
+    A product with a single slide gets .ffcar-single, which removes the arrows
+    and dots rather than leaving dead controls. Expects `product`. -#}
+{%- set slideCount = (product.images | length) + (1 if product.video else 0) -%}
+{%- set single = slideCount < 2 -%}
+<div class="ffcar{% if single %} ffcar-single{% endif %}" data-gallery>
+  <div class="ffcar__stage">
+    {%- if product.video %}
+    <div class="ffcar__slide"
+         id="slide-{{ product.slug }}-video"
+         data-slide data-video
+         data-active="true"
+         aria-hidden="false"
+         role="tabpanel"
+         aria-labelledby="dot-{{ product.slug }}-video">
+      <iframe src="https://www.youtube-nocookie.com/embed/{{ product.video }}?rel=0"
+              width="1920" height="1080"
+              title="{{ product.name }} video"
+              loading="lazy"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+    </div>
+    {%- endif %}
+
+    {%- for image in product.images %}
+    {%- set first = loop.first and not product.video %}
+    <div class="ffcar__slide"
+         id="slide-{{ product.slug }}-{{ loop.index }}"
+         data-slide
+         data-active="{{ 'true' if first else 'false' }}"
+         aria-hidden="{{ 'false' if first else 'true' }}"
+         {% if not first %}inert{% endif %}
+         role="tabpanel"
+         aria-labelledby="dot-{{ product.slug }}-{{ loop.index }}">
+      <picture>
+        <source srcset="/assets/img/{{ image.src }}.webp" type="image/webp">
+        <img src="/assets/img/{{ image.src }}.jpg"
+             width="{{ image.width }}" height="{{ image.height }}"
+             alt="{{ image.alt }}"
+             {% if first %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
+             decoding="async"
+             onerror="var t=document.createElement('p');t.className='img-fallback';t.textContent=this.dataset.name;this.closest('picture').replaceWith(t)"
+             data-name="{{ product.name }}">
+      </picture>
+    </div>
+    {%- endfor %}
+  </div>
+
+  {%- if not single %}
+  <button class="ffcar__arrow ffcar__arrow--prev" type="button" data-prev>
+    <span class="visually-hidden">Previous slide</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"
+         stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+  </button>
+  <button class="ffcar__arrow ffcar__arrow--next" type="button" data-next>
+    <span class="visually-hidden">Next slide</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"
+         stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+  </button>
+
+  <div class="ffcar__dots" role="tablist" aria-label="{{ product.name }} media">
+    {%- if product.video %}
+    <button class="ffcar__dot" id="dot-{{ product.slug }}-video" type="button" role="tab"
+            data-dot aria-selected="true" aria-controls="slide-{{ product.slug }}-video" tabindex="0">
+      <span class="visually-hidden">Video, slide 1 of {{ slideCount }}</span>
+    </button>
+    {%- endif %}
+    {%- for image in product.images %}
+    {%- set first = loop.first and not product.video %}
+    {%- set n = loop.index + (1 if product.video else 0) %}
+    <button class="ffcar__dot" id="dot-{{ product.slug }}-{{ loop.index }}" type="button" role="tab"
+            data-dot aria-selected="{{ 'true' if first else 'false' }}"
+            aria-controls="slide-{{ product.slug }}-{{ loop.index }}"
+            tabindex="{{ '0' if first else '-1' }}">
+      <span class="visually-hidden">Screenshot, slide {{ n }} of {{ slideCount }}</span>
+    </button>
+    {%- endfor %}
+  </div>
+  {%- endif %}
+</div>

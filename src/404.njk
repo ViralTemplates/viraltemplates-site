@@ -1,0 +1,39 @@
+---
+layout: layouts/base.njk
+permalink: /404.html
+title: "Page not found · Viral Templates"
+description: "That page isn't here. The game templates, the asset packs and the contact form all still are. Pick one of the links below."
+eleventyExcludeFromCollections: true
+---
+
+<section class="notfound">
+  <div class="well">
+    <div class="page-head">
+    <h1 class="display">That page isn't here.</h1>
+    <p class="sub" style="margin-top: var(--s-6); max-width: 52ch">
+      The link is either old or mistyped. Everything we sell is two clicks away.
+    </p>
+
+    </div>
+    <div class="btn-row" style="margin-top: var(--s-10); justify-content: center">
+      <a class="btn btn--primary btn--lg" href="/templates/">
+        Browse all game templates and asset packs
+        <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M2 8h11M9 4l4 4-4 4"/>
+        </svg>
+      </a>
+      <a class="btn btn--ghost btn--lg" href="/">Back to the home page</a>
+    </div>
+
+    <div style="margin-top: var(--s-16)">
+      <h2 class="footer__heading">Or go straight to a product</h2>
+      <ul class="footer__list">
+        {%- for p in products %}
+        <li><a href="/{{ p.slug }}/">{{ p.name }}, ${{ p.priceNow | money }}</a></li>
+        {%- endfor %}
+        <li><a href="/contact/">Contact us</a></li>
+      </ul>
+    </div>
+  </div>
+</section>

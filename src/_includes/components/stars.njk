@@ -1,0 +1,11 @@
+{#- Five stars with the fifth clipped to the exact computed fraction, so a 4.9
+    reads as 4.9 and never rounds up to a full five. Expects `fillPercent`. -#}
+{%- set starPath = "M12 2.2l2.95 5.98 6.6.96-4.77 4.65 1.12 6.57L12 17.26l-5.9 3.1 1.13-6.57L2.45 9.14l6.6-.96L12 2.2z" -%}
+<span class="stars" style="--fill: {{ fillPercent }}%">
+  <span class="stars__row stars__base" aria-hidden="true">
+    {%- for i in range(0, 5) %}<svg viewBox="0 0 24 24"><path d="{{ starPath }}"/></svg>{% endfor -%}
+  </span>
+  <span class="stars__row stars__fill" aria-hidden="true">
+    {%- for i in range(0, 5) %}<svg viewBox="0 0 24 24"><path d="{{ starPath }}"/></svg>{% endfor -%}
+  </span>
+</span>

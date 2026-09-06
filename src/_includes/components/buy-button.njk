@@ -1,0 +1,39 @@
+{#- Checkout. Two genuinely different states:
+
+    live — an <a> whose href is the real Payhip product URL. payhip.js upgrades
+           it to the overlay checkout; if that script fails to load or is
+           blocked, the click is a plain navigation to the same product. It is
+           never href="#".
+
+    soon — a real disabled <button>, so it is announced as disabled and cannot
+           be focused into a dead end, plus a live Discord link so the visitor
+           has somewhere to go. No anchor faking it with cursor: not-allowed.
+
+    Expects `product`. Optional: `block` for full width, `size` ("lg"),
+    `buyLabel` to override the default "Buy {name}" wording. -#}
+{%- set sizeClass = " btn--lg" if size == "lg" else "" -%}
+{%- set blockClass = " btn--block" if block else "" -%}
+
+{%- if product.status == "live" %}
+<a class="btn btn--primary payhip-buy-button{{ sizeClass }}{{ blockClass }}"
+   data-product="{{ product.payhipId }}"
+   data-theme="none"
+   href="{{ product.payhipUrl }}">
+  Buy for ${{ product.priceNow | money }}
+  <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+       stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M2 8h11M9 4l4 4-4 4"/>
+  </svg>
+</a>
+{%- else %}
+<button class="btn btn--primary{{ sizeClass }}{{ blockClass }}" type="button" disabled>
+  {{ product.name }}, not released yet
+</button>
+<a class="link-arrow" href="{{ site.discord }}" rel="noopener" target="_blank">
+  Get notified in the Discord when {{ product.name }} drops
+  <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+       stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M2 8h11M9 4l4 4-4 4"/>
+  </svg>
+</a>
+{%- endif %}

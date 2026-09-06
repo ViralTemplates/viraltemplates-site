@@ -1,0 +1,7 @@
+{#- Fixed mobile purchase bar. Slides in once the hero has scrolled past.
+    Hidden entirely above 1024px by CSS. Expects `product`. -#}
+<div class="buybar" data-buybar>
+  <span class="buybar__price">${{ product.priceNow | money }}</span>
+  {% set block = false %}
+  {% include "components/buy-button.njk" %}
+</div>

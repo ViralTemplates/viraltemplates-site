@@ -10,3 +10,5 @@ node_modules/
 /product-files/
 .DS_Store
 Thumbs.db
+
+_source-images/

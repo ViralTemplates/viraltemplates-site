@@ -1,0 +1,40 @@
+{#- The three store facts. Every figure is computed — none is typed in here.
+    Left card is tall; the two on the right stack beside it. -#}
+<div class="stats" data-stats>
+  <div class="stat stat--tall">
+    <div class="stat__top">
+      <span class="stat__label">Developers</span>
+    </div>
+    <p class="stat__figure" data-count="{{ site.customerCount }}" data-suffix="+">{{ site.customerCount }}+</p>
+    <p class="stat__caption">Templates and assets sold to developers</p>
+    {% include "components/sparkline.njk" %}
+  </div>
+
+  <div class="stat">
+    <div class="stat__top">
+      <span class="stat__label">Products</span>
+      <span class="stat__pill">More dropping soon</span>
+    </div>
+    <p class="stat__figure" data-count="{{ stats.productCount }}">{{ stats.productCount }}</p>
+    <p class="stat__caption">Released, live and supported</p>
+    {#- Eight bars, the filled count taken from the live product count. -#}
+    <div class="stat__bars" aria-hidden="true">
+      {%- for i in range(0, 8) %}
+      <span class="stat__bar{% if i < stats.productCount %} stat__bar--on{% endif %}"></span>
+      {%- endfor %}
+    </div>
+  </div>
+
+  <div class="stat">
+    <div class="stat__top">
+      <span class="stat__label">Rating</span>
+      <span class="stat__pill">{{ stats.reviewCount }} reviews</span>
+    </div>
+    <div class="stat__stars">
+      {% set fillPercent = (stats.averageOutOf5 / 5 * 100) | round %}
+      {% include "components/stars.njk" %}
+    </div>
+    <p class="stat__figure" data-count="{{ stats.averageOutOf5 }}">{{ stats.averageOutOf5 }}</p>
+    <p class="stat__caption">Average customer rating</p>
+  </div>
+</div>

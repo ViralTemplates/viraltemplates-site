@@ -1,0 +1,29 @@
+{#- One buyer review. `review` is required; `large` picks the tier-3 treatment.
+    Text and display names render verbatim — Nunjucks autoescaping handles the
+    names carrying unusual unicode, brackets and "$". -#}
+{%- set reviewProduct = products | findBySlug(review.product) -%}
+<figure class="review{% if large %} review--lg{% endif %}{% if reveal %} reveal{% endif %}">
+  <div class="review__top">
+    <span class="review__source">
+      {%- if review.source == "roblox" -%}Roblox Creator Store{%- else -%}Discord · verified buyer{%- endif -%}
+    </span>
+    {%- if review.score != null %}
+    <span class="review__score">{{ review.score }}/10</span>
+    {%- endif %}
+  </div>
+
+  <blockquote class="review__text">{{ review.text }}</blockquote>
+
+  <figcaption class="review__foot">
+    <span class="review__name">
+      {%- if review.profileUrl -%}
+      <a href="{{ review.profileUrl }}" rel="noopener nofollow" target="_blank">{{ review.name }}</a>
+      {%- else -%}
+      {{ review.name }}
+      {%- endif -%}
+    </span>
+    {%- if reviewProduct %}
+    <span class="review__source">on {{ reviewProduct.name }}</span>
+    {%- endif %}
+  </figcaption>
+</figure>

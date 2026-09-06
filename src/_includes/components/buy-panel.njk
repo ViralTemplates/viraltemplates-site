@@ -1,0 +1,54 @@
+{#- Sticky purchase panel for the product page. The Payhip wiring lives in
+    buy-button.njk and is untouched. Expects `product`. -#}
+<div class="buypanel">
+  <p class="buypanel__price">
+    ${{ product.priceNow | money }}
+    <s class="buypanel__was">${{ product.priceWas | money }}</s>
+  </p>
+
+  <div class="buypanel__meta">
+    <span class="badge-sale">{{ product.priceNow | percentOff(product.priceWas) }}% off</span>
+  </div>
+
+  {% include "components/licence-note.njk" %}
+
+  {#- This product's own rating, matching the page's AggregateRating exactly.
+      A product with no reviews shows nothing here and emits no rating. -#}
+  {%- set productRating = reviews | ratingFor(product.slug) %}
+  {%- if productRating %}
+  <div class="rating" style="margin-top: var(--s-5)">
+    {% set fillPercent = productRating.fillPercent %}
+    {% include "components/stars.njk" %}
+    <span class="rating__num"><span class="num">{{ productRating.averageOutOf5 }}</span> out of 5 from <span class="num">{{ productRating.ratedCount }}</span> rated reviews</span>
+  </div>
+  {%- endif %}
+
+  <div class="buypanel__cta">
+    {% set block = true %}
+    {% include "components/buy-button.njk" %}
+    <div class="buypanel__alt">
+      <a class="btn btn--ghost btn--block" href="{{ site.discord }}" rel="noopener" target="_blank">Buy with Robux</a>
+      <a class="btn btn--ghost btn--block" href="{{ site.discord }}" rel="noopener" target="_blank">Buy with Crypto</a>
+    </div>
+  </div>
+
+  <ul class="buypanel__list">
+    {%- for feature in product.features %}
+    <li>
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 8.5l3.5 3.5L13 5"/>
+      </svg>
+      {{ feature.title }}
+    </li>
+    {%- endfor %}
+    <li>
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 8.5l3.5 3.5L13 5"/>
+      </svg>
+      One-off payment, instant download
+    </li>
+  </ul>
+
+</div>

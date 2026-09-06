@@ -1,0 +1,15 @@
+{#- Continuous review strip. Sourced from tier 3 + tier 2. The duplicate half
+    that hides the seam is cloned at runtime by marquee.js and marked
+    aria-hidden, so each review appears once in the delivered HTML.
+    Expects `marqueeReviews`. -#}
+<div class="rmarquee" data-marquee aria-label="Buyer reviews">
+  <div class="rmarquee__track">
+    <div class="rmarquee__group">
+      {%- for review in marqueeReviews %}
+      {% set large = false %}
+      {% set reveal = false %}
+      {% include "components/review-card.njk" %}
+      {%- endfor %}
+    </div>
+  </div>
+</div>

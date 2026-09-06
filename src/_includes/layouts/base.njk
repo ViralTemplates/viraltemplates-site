@@ -1,0 +1,170 @@
+{%- set canonical = site.url + page.url -%}
+{%- set ogImage = site.url + "/assets/img/og-default.jpg" -%}
+{%- set faqList = faq if faq else (product.faq if product else none) -%}
+{%- set productRating = (reviews | ratingFor(product.slug)) if product else none -%}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>{{ title }}</title>
+<meta name="description" content="{{ description }}">
+<link rel="canonical" href="{{ canonical }}">
+
+<meta property="og:type" content="{{ "product" if product else "website" }}">
+<meta property="og:site_name" content="{{ site.siteName }}">
+<meta property="og:title" content="{{ title }}">
+<meta property="og:description" content="{{ description }}">
+<meta property="og:url" content="{{ canonical }}">
+<meta property="og:image" content="{{ ogImage }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Viral Templates logo: a white VT monogram with a cyan swoosh on a deep blue field.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ title }}">
+<meta name="twitter:description" content="{{ description }}">
+<meta name="twitter:image" content="{{ ogImage }}">
+<meta name="theme-color" content="#070b18">
+
+<link rel="icon" href="/assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+
+<link rel="preload" href="/assets/fonts/Outfit-Variable.woff2" as="font" type="font/woff2" crossorigin>
+
+{#- The only inline CSS on the site: enough to paint the header and hero
+    correctly on first frame. Everything else, including every component, lives
+    in the one stylesheet loaded non-blocking below. -#}
+<style>
+@font-face{font-family:"Outfit Fallback";src:local("Arial"),local("Helvetica"),local("Liberation Sans");size-adjust:96%;ascent-override:100%;descent-override:25%;line-gap-override:0%}
+:root{--brand-blue:#1246f2;--brand-cyan:#1cd1fc;--grad-from:#1246f2;--grad-to:#0e38c4;--base:#070b18;--base-deep:#04060f;--surface:#0d1424;--surface-raised:#141c30;--text:#fafafa;--text-muted:rgba(250,250,250,.62);--border:rgba(250,250,250,.09);--fs-display:clamp(44px,7vw,86px);--well:1180px;--r-sm:10px;--r-lg:18px}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--base);color:var(--text);font-family:"Outfit","Outfit Fallback",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,p,ul,ol{margin:0}ul,ol{padding:0;list-style:none}img,svg{display:block;max-width:100%}img{height:auto}
+a{color:var(--brand-cyan)}
+.well{width:100%;max-width:var(--well);margin-inline:auto;padding-inline:24px}
+.site-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.site-bg__vignette{position:absolute;inset:0;background:radial-gradient(ellipse 120% 90% at 50% 35%,transparent 0%,transparent 45%,rgba(4,6,15,.55) 78%,var(--base-deep) 100%)}
+main,.site-footer{position:relative;z-index:2}
+.site-header{position:sticky;top:0;z-index:50;padding-top:12px;padding-inline:16px}
+.nav{position:relative;display:flex;align-items:center;gap:24px;width:100%;max-width:var(--well);margin-inline:auto;padding:12px 20px;border-radius:var(--r-lg);border:1px solid var(--border);background:rgba(7,11,24,.55)}
+.nav__brand{display:inline-flex;align-items:center;gap:12px;margin-right:auto;color:var(--text);text-decoration:none;min-height:44px}
+.nav__mark{display:block;flex:none}
+.nav__mark img{width:34px;height:19px;object-fit:contain}
+.nav__toggle{display:none}
+.hero{min-height:100svh;display:flex;align-items:center;padding-block:96px 80px}
+.hero__inner{width:100%;max-width:900px;margin-inline:auto;text-align:center}
+.display{font-size:var(--fs-display);font-weight:900;letter-spacing:-.5px;line-height:1.08}
+.display__grad{display:block;padding-bottom:.08em;background:linear-gradient(135deg,#1246f2,#1cd1fc);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:0;color:var(--brand-cyan);display:block;margin-bottom:20px}
+.skip-link{position:absolute;left:16px;top:16px;transform:translateY(-200%);background:linear-gradient(135deg,var(--grad-from),var(--grad-to));color:#fff;padding:12px 20px;border-radius:var(--r-sm);text-decoration:none}
+</style>
+
+<link rel="preload" href="/assets/css/main.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/css/main.css"></noscript>
+
+<script>document.documentElement.className+=" js";</script>
+
+<script type="application/ld+json">{{ {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": site.siteName,
+  "url": site.url,
+  "logo": site.url + "/assets/img/vt-logo.png",
+  "image": ogImage,
+  "description": site.description,
+  "sameAs": [site.discord, site.twitter]
+} | jsonld | safe }}</script>
+
+{%- if product %}
+<script type="application/ld+json">{{ {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": product.name,
+  "description": product.tagline,
+  "sku": product.payhipId,
+  "brand": { "@type": "Brand", "name": site.siteName },
+  "image": [site.url + "/assets/img/" + product.images[0].src + ".jpg"],
+  "offers": {
+    "@type": "Offer",
+    "url": canonical,
+    "price": product.priceNow,
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock" if product.status == "live" else "https://schema.org/PreOrder",
+    "seller": { "@type": "Organization", "name": site.siteName }
+  }
+} | jsonld | safe }}</script>
+{%- if productRating %}
+{#- Own-product reviews only, and only when there are some: an AggregateRating
+    with a count of zero is invalid, so the block is simply absent. -#}
+<script type="application/ld+json">{{ {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": product.name,
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": productRating.averageOutOf5,
+    "bestRating": 5,
+    "worstRating": 1,
+    "ratingCount": productRating.ratedCount,
+    "reviewCount": productRating.reviewCount
+  }
+} | jsonld | safe }}</script>
+{%- endif %}
+<script type="application/ld+json">{{ {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": site.url + "/" },
+    { "@type": "ListItem", "position": 2, "name": "Templates", "item": site.url + "/templates/" },
+    { "@type": "ListItem", "position": 3, "name": product.name, "item": canonical }
+  ]
+} | jsonld | safe }}</script>
+{%- endif %}
+
+{%- if faqList %}
+<script type="application/ld+json">{{ {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqList | faqSchema
+} | jsonld | safe }}</script>
+{%- endif %}
+</head>
+
+<body>
+{% include "components/site-bg.njk" %}
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+{% include "components/nav.njk" %}
+
+<main id="main">
+{{ content | safe }}
+</main>
+
+{% include "components/footer.njk" %}
+
+<script src="/assets/js/nav.js" defer></script>
+<script src="/assets/js/reveal.js" defer></script>
+{%- if hasStats %}
+<script src="/assets/js/stats.js" defer></script>
+<script src="/assets/js/spark.js" defer></script>
+{%- endif %}
+{%- if hasFaq %}
+<script src="/assets/js/faq.js" defer></script>
+{%- endif %}
+{%- if hasMarquee %}
+<script src="/assets/js/marquee.js" defer></script>
+{%- endif %}
+{%- if product %}
+<script src="/assets/js/gallery.js" defer></script>
+<script src="/assets/js/buybar.js" defer></script>
+{#- Payhip's overlay checkout is only ever needed here. It is not loaded on the
+    home or templates pages, where nothing on the page uses it. -#}
+<script src="https://payhip.com/payhip.js" defer></script>
+{%- endif %}
+{%- if hasForm %}
+<script src="/assets/js/contact.js" defer></script>
+{%- endif %}
+</body>
+</html>

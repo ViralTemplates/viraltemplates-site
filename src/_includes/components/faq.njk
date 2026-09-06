@@ -1,0 +1,22 @@
+{#- <details>/<summary>, so the answers are in the HTML, open without JS and are
+    indexable. The answer is wrapped in a grid row that animates 0fr -> 1fr;
+    faq.js delays the open-attribute removal so closing animates too.
+    Expects `items` (array of {q, a}). -#}
+<div class="faq" data-faq>
+  {%- for item in items %}
+  <details class="faq__item"{% if loop.first %} open{% endif %}>
+    <summary class="faq__q">
+      {{ item.q }}
+      <svg class="faq__sign" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M6 9l6 6 6-6"/>
+      </svg>
+    </summary>
+    <div class="faq__a">
+      <div>
+        <p>{{ item.a }}</p>
+      </div>
+    </div>
+  </details>
+  {%- endfor %}
+</div>

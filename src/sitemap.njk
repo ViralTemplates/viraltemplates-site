@@ -1,0 +1,27 @@
+---
+permalink: /sitemap.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{%- set staticPages = [
+  { url: "/", priority: "1.0" },
+  { url: "/templates/", priority: "0.9" },
+  { url: "/contact/", priority: "0.5" },
+  { url: "/terms/", priority: "0.3" }
+] %}
+{%- for p in staticPages %}
+  <url>
+    <loc>{{ site.url }}{{ p.url }}</loc>
+    <lastmod>{{ buildDate }}</lastmod>
+    <priority>{{ p.priority }}</priority>
+  </url>
+{%- endfor %}
+{%- for p in products %}
+  <url>
+    <loc>{{ site.url }}/{{ p.slug }}/</loc>
+    <lastmod>{{ buildDate }}</lastmod>
+    <priority>0.8</priority>
+  </url>
+{%- endfor %}
+</urlset>

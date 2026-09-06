@@ -1,0 +1,25 @@
+{
+  "name": "viraltemplates-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Storefront for viraltemplates.co — Roblox game templates and UI packs. Checkout is handled by Payhip.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "eleventy",
+    "serve": "eleventy --serve",
+    "preview": "node tools/preview-server.mjs",
+    "images": "node tools/build-images.mjs",
+    "check": "node tools/check-build.mjs && node tools/check-content.mjs && node tools/check-owner-copy.mjs",
+    "verify": "npm run build && npm run check",
+    "check:gates": "node tools/check-the-checks.mjs",
+    "ratings": "node tools/audit-ratings.mjs",
+    "contrast": "node tools/contrast.mjs"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0",
+    "sharp": "^0.33.5"
+  }
+}

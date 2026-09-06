@@ -1,0 +1,45 @@
+{#- One product as a card. The whole card is a single <a>, so nothing inside it
+    is separately focusable.
+    Expects `product`. Optional `priority` for the LCP image on the first card. -#}
+{%- set image = product.images[0] -%}
+<a class="pcard" href="/{{ product.slug }}/">
+  <div class="pcard__media">
+    <picture>
+      <source srcset="/assets/img/{{ image.src }}.webp" type="image/webp">
+      <img src="/assets/img/{{ image.src }}.jpg"
+           width="{{ image.width }}" height="{{ image.height }}"
+           alt="{{ image.alt }}"
+           {% if priority %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
+           decoding="async"
+           onerror="var t=document.createElement('p');t.className='img-fallback';t.textContent=this.dataset.name;this.closest('picture').replaceWith(t)"
+           data-name="{{ product.name }}">
+    </picture>
+    <span class="pcard__scrim"></span>
+    {%- if product.status != "live" %}
+    <span class="pcard__badge pcard__badge--soon">Coming soon</span>
+    {%- elif product.badge %}
+    <span class="pcard__badge pcard__badge--{{ product.badge.tone }}">{{ product.badge.label }}</span>
+    {%- endif %}
+  </div>
+
+  <div class="pcard__body">
+    <h3 class="pcard__name" title="{{ product.name }}">{{ product.name }}</h3>
+    <p class="pcard__desc" title="{{ product.tagline }}">{{ product.tagline }}</p>
+
+    <p class="pcard__price">
+      <b>${{ product.priceNow | money }}</b>
+      <s>${{ product.priceWas | money }}</s>
+    </p>
+
+    {#- One shared wording for the licence cap, sourced from products.json. -#}
+    {% include "components/licence-note.njk" %}
+
+    <span class="btn btn--primary pcard__action">
+      View product
+      <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M2 8h11M9 4l4 4-4 4"/>
+      </svg>
+    </span>
+  </div>
+</a>

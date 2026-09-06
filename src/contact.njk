@@ -1,0 +1,75 @@
+---
+layout: layouts/base.njk
+permalink: /contact/
+title: "Contact Viral Templates · Support for Roblox Templates"
+description: "Questions about a game template or asset pack, a missing download, or help setting one up in Roblox Studio. Message us here or ask in the Discord."
+hasForm: true
+---
+
+<section class="section section--tall" style="padding-bottom: var(--s-12)">
+  <div class="well">
+    <div class="page-head">
+      <h1 class="display">Not sure which one fits your game?</h1>
+      <p class="hero__sub" style="max-width: 560px">
+        Ask us and we'd be more than happy to help select the right one for you.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--flush-top">
+  <div class="well">
+    {#- A real action and method, so with JS off this posts straight to Formspree
+        and lands on their confirmation page. contact.js upgrades it to an inline
+        submit. Required fields carry required + aria-required; no asterisks. -#}
+    <form class="form" id="contact-form" action="{{ site.formspree }}" method="POST"
+          style="margin-inline: auto">
+      <div class="field">
+        <label class="field__label" for="name">Your name</label>
+        <input type="text" id="name" name="name" required aria-required="true" autocomplete="name"
+               aria-describedby="name-error" data-msg-required="Tell us who we're replying to.">
+        <p class="field__error" id="name-error" role="alert"></p>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="email">Email</label>
+        <input type="email" id="email" name="email" required aria-required="true" autocomplete="email"
+               aria-describedby="email-error" data-msg-required="We need an address to reply to.">
+        <p class="field__error" id="email-error" role="alert"></p>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="product">Which product (optional)</label>
+        <input type="text" id="product" name="product" list="product-list"
+               placeholder="e.g. Essential Stud UI Pack">
+        <datalist id="product-list">
+          {%- for p in products %}
+          <option value="{{ p.name }}"></option>
+          {%- endfor %}
+        </datalist>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="message">Message</label>
+        <textarea id="message" name="message" required aria-required="true" minlength="12"
+                  aria-describedby="message-error"
+                  data-msg-required="Say what you need and we'll pick it up."></textarea>
+        <p class="field__error" id="message-error" role="alert"></p>
+      </div>
+
+      <div>
+        <button class="btn btn--primary btn--lg btn--block" type="submit">Send message</button>
+      </div>
+
+      <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
+
+      {#- Secondary, and it must read as secondary: a label, then a small ghost
+          button, 16px under the submit. Not a sibling of it. -#}
+      <div class="form__after">
+        <span class="form__after-label">Or get an answer faster</span>
+        <a class="btn btn--ghost btn--sm" href="{{ site.discord }}"
+           rel="noopener" target="_blank">Join the Discord</a>
+      </div>
+    </form>
+  </div>
+</section>
