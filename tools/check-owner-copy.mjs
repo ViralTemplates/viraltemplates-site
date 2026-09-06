@@ -91,6 +91,12 @@ check(jump, "Buy for $79.99", "buy button label, price from products.json");
 console.log("\nHOME CTA BAND");
 check("index.html", "Pick a product and get building", "CTA heading");
 check("index.html", "A range of products, all professionally built, downloadable immediately.", "CTA sub");
+// The link label is pinned as the full anchor tail so the word "Browse" in
+// the collection heading cannot satisfy it. "See all three" would go stale
+// the moment a fourth product ships, so its absence is asserted too.
+check("index.html", 'href="/templates/">Browse</a>', "CTA link label");
+if (flat(page("index.html")).includes("See all three")) { console.log("  x old CTA label 'See all three' still present"); fail++; }
+else console.log("  . old CTA label 'See all three' is gone");
 check("index.html", "Join the Discord", "hero secondary button");
 
 console.log("\nTERMS OF SERVICE (terms/index.html)");

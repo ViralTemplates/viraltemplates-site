@@ -25,6 +25,12 @@ const CASES = [
     expect: /renders 1 em dash/,
   },
   {
+    name: "the old 'See all three' CTA label coming back is caught",
+    file: "src/index.njk",
+    apply: (s) => s.replace('href="/templates/">Browse</a>', 'href="/templates/">See all three</a>'),
+    expect: /CTA link label — NOT FOUND|old CTA label 'See all three' still present/,
+  },
+  {
     name: "a price set outside Montserrat is caught",
     file: "src/assets/css/main.css",
     apply: (s) => s.replace(".price__now {\n  font-family: var(--font-price);", ".price__now {\n  font-family: var(--font-sans);"),

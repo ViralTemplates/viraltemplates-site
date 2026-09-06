@@ -752,6 +752,14 @@ main,
   cursor: pointer;
   white-space: nowrap;
   overflow: hidden;
+  /* The border is a transparent 1px ring. By default a background image is
+     sized to the padding box (background-origin) but painted to the border
+     box (background-clip) and tiled, so the ring shows the gradient wrapped:
+     the left edge picks up the ramp's END colour and the right edge its
+     START colour, a 1px seam that is most visible where the corners curve.
+     The primary's two blues are near-identical so it hides it; the Robux and
+     Crypto ramps do not. Sizing the image to the border box removes the wrap. */
+  background-origin: border-box;
   transition: background-color var(--t-hover) var(--ez),
     border-color var(--t-hover) var(--ez), color var(--t-hover) var(--ez),
     transform var(--t-hover) var(--ez), box-shadow var(--t-hover) var(--ez);
