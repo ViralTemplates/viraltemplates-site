@@ -460,8 +460,8 @@ const cases = [
   ["--brand-cyan on --surface-raised", token["--brand-cyan"], token["--surface-raised"], AA_SMALL, "labels on raised"],
   ["#ffffff on --brand-blue", "#ffffff", token["--brand-blue"], AA_SMALL, "primary button"],
   ["--base on --brand-cyan", token["--base"], token["--brand-cyan"], AA_SMALL, "cyan-filled badge"],
-  ["--base on #22C55E", token["--base"], "#22c55e", AA_SMALL, "Buy with Robux, darkest ramp stop"],
-  ["--base on #D9962B", token["--base"], "#d9962b", AA_SMALL, "Buy with Crypto, darkest ramp stop"],
+  ["--base on #00B84D", token["--base"], "#00b84d", AA_SMALL, "Buy with Robux, darkest ramp stop"],
+  ["--base on #E8590C", token["--base"], "#e8590c", AA_SMALL, "Buy with Crypto, darkest ramp stop"],
   // .price__was / .buypanel__was render at 18px weight 400. That is NOT large
   // text — WCAG needs 24px, or 18.66px at 700+ — so this takes the 4.5:1 gate.
   ["--danger on --base", token["--danger"], token["--base"], AA_SMALL, "18px/400 strikethrough price"],

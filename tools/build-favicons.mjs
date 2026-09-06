@@ -1,13 +1,14 @@
-// Favicons from the SAME file the nav logo <img> points at, so the tab icon
-// cannot drift from the header mark. Each output is one sharp resize with
-// fit: "contain": the mark scaled to fit the square, centred, aspect preserved,
-// padded with solid --base. No compositing step. PNG only, no .ico.
+// Favicons from the logo MASTER, _source-images/MainVTLogo.png. That folder is
+// gitignored (the masters are not shipped), so this reads from it and writes
+// the outputs into src/assets/img/, which is. Each output is one sharp resize
+// with fit: "contain": the mark scaled to fit the square, centred, aspect
+// preserved, padded with solid --base. No compositing step. PNG only, no .ico.
 //
-// Run: npm run favicons
+// Run: npm run favicons   (needs _source-images/ present locally)
 import sharp from "sharp";
 import { writeFileSync, existsSync } from "node:fs";
 
-const SOURCE = "src/assets/img/vt-logo.png"; // == the nav <img src>
+const SOURCE = "_source-images/MainVTLogo.png";
 const OUT = "src/assets/img";
 const BASE = { r: 7, g: 11, b: 24, alpha: 1 }; // #070B18
 

@@ -817,33 +817,35 @@ main,
 }
 
 /* Robux and Crypto fills. Same geometry as the primary (the .btn base sets
-   padding, radius and size; btn--block sets width); --base text on both, since
-   the ramps are light. Measured at each ramp's DARKEST stop:
-   #22C55E 8.61:1, #D9962B 7.80:1. */
+   padding, radius and size; btn--block sets width); --base text on both. The
+   ramps travel through several saturated stops so they read as gradients, not
+   tints. AA is measured at each ramp's DARKEST stop (#00B84D, #E8590C) by the
+   contrast gate, which fails the build if either stop is ever made darker. */
 .btn--robux {
-  background: linear-gradient(135deg, #22c55e 0%, #4ade80 100%);
+  background: linear-gradient(135deg, #00b84d 0%, #00e676 55%, #3bf08f 100%);
   color: var(--base);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.28) inset, 0 4px 16px rgba(34, 197, 94, 0.3);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.32) inset, 0 4px 16px rgba(0, 200, 83, 0.38);
 }
 
 .btn--robux:hover {
-  background: linear-gradient(120deg, #22c55e 0%, #4ade80 100%);
+  background: linear-gradient(120deg, #00b84d 0%, #00e676 55%, #3bf08f 100%);
   color: var(--base);
   transform: translateY(-2px);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.28) inset, 0 10px 28px rgba(34, 197, 94, 0.45);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.32) inset, 0 10px 28px rgba(0, 200, 83, 0.52);
 }
 
+/* Red-orange into gold, not flat yellow. */
 .btn--crypto {
-  background: linear-gradient(135deg, #d9962b 0%, #f5c542 100%);
+  background: linear-gradient(135deg, #e8590c 0%, #f97316 40%, #ffb020 75%, #ffd24a 100%);
   color: var(--base);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.28) inset, 0 4px 16px rgba(217, 150, 43, 0.3);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.32) inset, 0 4px 16px rgba(249, 115, 22, 0.38);
 }
 
 .btn--crypto:hover {
-  background: linear-gradient(120deg, #d9962b 0%, #f5c542 100%);
+  background: linear-gradient(120deg, #e8590c 0%, #f97316 40%, #ffb020 75%, #ffd24a 100%);
   color: var(--base);
   transform: translateY(-2px);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.28) inset, 0 10px 28px rgba(217, 150, 43, 0.45);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.32) inset, 0 10px 28px rgba(249, 115, 22, 0.52);
 }
 
 .btn--robux:active,
