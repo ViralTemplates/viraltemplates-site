@@ -1,6 +1,7 @@
 {#- Checkout. Two genuinely different states:
 
-    live — an <a> whose href is the real Payhip product URL. payhip.js upgrades
+    live — an <a> whose href is {site.url}/buy?link={payhipId}, derived in
+           the template so it cannot drift from data-product. payhip.js upgrades
            it to the overlay checkout; if that script fails to load or is
            blocked, the click is a plain navigation to the same product. It is
            never href="#".
@@ -18,7 +19,7 @@
 <a class="btn btn--primary payhip-buy-button{{ sizeClass }}{{ blockClass }}"
    data-product="{{ product.payhipId }}"
    data-theme="none"
-   href="{{ product.payhipUrl }}">
+   href="{{ site.url }}/buy?link={{ product.payhipId }}">
   Buy for ${{ product.priceNow | money }}
   <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor"
        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

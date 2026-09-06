@@ -96,6 +96,21 @@ for (const file of pages.sort()) {
 
   if (html.includes('href="#"')) bad('href="#" found');
 
+  // Every Payhip buy button keeps its overlay wiring and links to the /buy
+  // route with the same id it carries in data-product. Nothing may point at
+  // payhip.com/b/ directly any more.
+  const buyButtons = [...html.matchAll(/<a[^>]*payhip-buy-button[^>]*>/g)].map((m) => m[0]);
+  if (isProduct) expect(buyButtons.length, 1, url + ": payhip buy buttons");
+  for (const tag of buyButtons) {
+    const id = (tag.match(/data-product="([^"]*)"/) || [])[1];
+    const href = (tag.match(/href="([^"]*)"/) || [])[1];
+    if (!id) bad("buy button without data-product: " + tag.slice(0, 90));
+    if (!/data-theme="none"/.test(tag)) bad("buy button without data-theme=none: " + tag.slice(0, 90));
+    const want = "https://viraltemplates.co/buy?link=" + id;
+    if (href !== want) bad("buy button href is " + href + ", expected " + want);
+  }
+  if (html.includes("payhip.com/b/")) bad("direct payhip.com/b/ link still present");
+
   // Video-bearing product pages carry exactly one iframe, on the
   // youtube-nocookie host, lazy and titled. Every other page carries none.
   const iframes = [...html.matchAll(/<iframe\b[^>]*>/g)].map((m) => m[0]);
