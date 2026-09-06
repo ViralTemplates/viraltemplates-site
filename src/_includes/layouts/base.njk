@@ -27,14 +27,10 @@
 <meta name="twitter:image" content="{{ ogImage }}">
 <meta name="theme-color" content="#070B18">
 
-{#- Every icon is generated from the nav logo's own file by
-    tools/build-favicons.mjs, composited on --base so it reads on light and
-    dark tab bars. favicon.ico is also copied to the site root for browsers
-    that request /favicon.ico without reading the page. #}
-<link rel="icon" href="/favicon.ico" sizes="16x16 32x32" type="image/x-icon">
-<link rel="icon" href="/assets/img/favicon-32.png" sizes="32x32" type="image/png">
-<link rel="icon" href="/assets/img/favicon-16.png" sizes="16x16" type="image/png">
-<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png" sizes="180x180">
+{# Icons are generated from the nav logo's own file by tools/build-favicons.mjs. #}
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
 
 <link rel="preload" href="/assets/fonts/Outfit-Variable.woff2" as="font" type="font/woff2" crossorigin>
 
@@ -66,8 +62,8 @@ main,.site-footer{position:relative;z-index:2}
 .skip-link{position:absolute;left:16px;top:16px;transform:translateY(-200%);background:linear-gradient(135deg,var(--grad-from),var(--grad-to));color:#fff;padding:12px 20px;border-radius:var(--r-sm);text-decoration:none}
 </style>
 
-<link rel="preload" href="/assets/css/main.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/css/main.css"></noscript>
+<link rel="preload" href="{{ "/assets/css/main.css" | asset }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ "/assets/css/main.css" | asset }}"></noscript>
 
 <script>document.documentElement.className+=" js";</script>
 
@@ -150,27 +146,27 @@ main,.site-footer{position:relative;z-index:2}
 
 {% include "components/footer.njk" %}
 
-<script src="/assets/js/nav.js" defer></script>
-<script src="/assets/js/reveal.js" defer></script>
+<script src="{{ "/assets/js/nav.js" | asset }}" defer></script>
+<script src="{{ "/assets/js/reveal.js" | asset }}" defer></script>
 {%- if hasStats %}
-<script src="/assets/js/stats.js" defer></script>
-<script src="/assets/js/spark.js" defer></script>
+<script src="{{ "/assets/js/stats.js" | asset }}" defer></script>
+<script src="{{ "/assets/js/spark.js" | asset }}" defer></script>
 {%- endif %}
 {%- if hasFaq %}
-<script src="/assets/js/faq.js" defer></script>
+<script src="{{ "/assets/js/faq.js" | asset }}" defer></script>
 {%- endif %}
 {%- if hasMarquee %}
-<script src="/assets/js/marquee.js" defer></script>
+<script src="{{ "/assets/js/marquee.js" | asset }}" defer></script>
 {%- endif %}
 {%- if product %}
-<script src="/assets/js/gallery.js" defer></script>
-<script src="/assets/js/buybar.js" defer></script>
+<script src="{{ "/assets/js/gallery.js" | asset }}" defer></script>
+<script src="{{ "/assets/js/buybar.js" | asset }}" defer></script>
 {#- Payhip's overlay checkout is only ever needed here. It is not loaded on the
     home or templates pages, where nothing on the page uses it. -#}
 <script src="https://payhip.com/payhip.js" defer></script>
 {%- endif %}
 {%- if hasForm %}
-<script src="/assets/js/contact.js" defer></script>
+<script src="{{ "/assets/js/contact.js" | asset }}" defer></script>
 {%- endif %}
 </body>
 </html>

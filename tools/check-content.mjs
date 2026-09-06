@@ -309,6 +309,24 @@ for (const sel of [".review", ".fgroup", ".card", ".stat"]) {
   }
 }
 
+// Each filled buy variant must declare its own gradient AND colour, and no
+// later rule in the file may re-declare color for that selector. This is the
+// rule that would have flagged a lost or overridden button style.
+for (const sel of [".btn--robux", ".btn--crypto"]) {
+  const body = rule(css, sel, "buy variant");
+  if (!body) continue;
+  if (!/background:\s*linear-gradient\(/.test(body)) bad(sel + " does not declare a background gradient");
+  else if (!/color:\s*var\(--base\)/.test(body)) bad(sel + " does not declare color: var(--base)");
+  else ok(sel + " declares its gradient and --base text");
+  const at = css.indexOf(sel + " {");
+  const later = css.slice(css.indexOf("}", at) + 1);
+  // any later rule whose selector list contains this exact selector (not :hover) and sets color
+  const escaped = sel.replace(/[.\-]/g, (c) => "\\" + c);
+  const re = new RegExp("(^|[\\s,])" + escaped + "\\s*(,|\\{)[^{]*\\{[^}]*\\bcolor\\s*:", "m");
+  if (re.test(later)) bad(sel + " has its color re-declared by a later rule");
+  else ok("no later rule re-declares color for " + sel);
+}
+
 const glass = (css.match(/backdrop-filter/g) || []).length;
 if (glass > 10) bad(glass + " backdrop-filter declarations — more than the header, carousel arrows and buy bar need");
 else ok(glass + " backdrop-filter declarations (header, carousel arrows, buy bar)");
@@ -376,7 +394,8 @@ ok("font payload " + (fontBytes / 1024).toFixed(1) + " KB across " + woff2.lengt
 console.log("\nSTYLESHEET");
 const sheets = new Set();
 for (const page of pages) {
-  for (const [, href] of page.html.matchAll(/<link[^>]+href="([^"]+\.css)"/g)) sheets.add(href);
+  for (const [, href] of page.html.matchAll(/<link[^>]+href="([^"?]+\.css)(?:\?v=[0-9a-f]{8})?"/g)) sheets.add(href);
+  if (!/href="\/assets\/css\/main\.css\?v=[0-9a-f]{8}"/.test(page.html)) bad(page.name + ": stylesheet URL is not content-hashed");
 }
 ok(`stylesheets referenced site-wide: ${[...sheets].join(", ") || "none"}`);
 if (sheets.size !== 1) bad("expected exactly one stylesheet");

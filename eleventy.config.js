@@ -1,13 +1,23 @@
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+
 export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/assets/img");
   eleventyConfig.addPassthroughCopy("src/assets/fonts");
   eleventyConfig.addPassthroughCopy("src/assets/js");
   eleventyConfig.addPassthroughCopy("src/assets/css");
   eleventyConfig.addPassthroughCopy({ CNAME: "CNAME" });
-  // Browsers request /favicon.ico by convention, so the same file also lives at the root.
-  eleventyConfig.addPassthroughCopy({ "src/assets/img/favicon.ico": "favicon.ico" });
 
   eleventyConfig.addWatchTarget("src/assets/");
+
+  // Appends a short content hash to a CSS/JS URL, so a deploy that changes the
+  // file also changes its URL. Without this, GitHub Pages' 10-minute asset
+  // cache (and any browser heuristic) can serve a previous deploy's stylesheet
+  // against the new HTML, which is how two buttons shipped as bare cyan text.
+  eleventyConfig.addFilter("asset", (path) => {
+    const hash = createHash("md5").update(readFileSync("src" + path)).digest("hex").slice(0, 8);
+    return path + "?v=" + hash;
+  });
 
   // Rebuilt on every push, so the footer year stays current.
   eleventyConfig.addGlobalData("buildYear", () => new Date().getFullYear());
