@@ -570,15 +570,27 @@ main,
   padding-inline: var(--s-4);
 }
 
-/* The pill and the CTA inside it share ONE radius, --nav-radius, set per
-   state on .nav. It is a registered property so the pill's single transition
-   below interpolates it; the pill's own border-radius and the CTA's both read
-   it, so the two corners are always the same number and cannot be edited
-   apart. The CTA has no transition of its own for it. */
+/* The pill's radius (--nav-radius) and the CTA's radius (--nav-cta-radius)
+   are both set per state on .nav, side by side, and are registered so the
+   pill's single transition below interpolates them. The CTA reads the
+   inherited live value and has no transition of its own, so it cannot desync.
+
+   The CTA is inset by the pill's vertical padding, so an equal radius reads
+   tighter than the pill's corner. The concentric value is outer radius minus
+   that gap:
+     rest       18px - 12px = 6px
+     condensed  50px -  8px = 42px, which exceeds half the 36px button height,
+                so it is floored to 999px: a pill stays a pill. */
 @property --nav-radius {
   syntax: "<length>";
   inherits: true;
   initial-value: 18px;
+}
+
+@property --nav-cta-radius {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 6px;
 }
 
 /* ONE transition covering the whole morph, at one duration. */
@@ -594,6 +606,7 @@ main,
   padding: 12px 20px;
   --nav-radius: var(--r-lg);
   border-radius: var(--nav-radius);
+  --nav-cta-radius: calc(var(--nav-radius) - 12px);
   border: 1px solid var(--border);
   background: rgba(7, 11, 24, 0.55);
   backdrop-filter: saturate(180%) blur(20px);
@@ -605,6 +618,7 @@ main,
 .site-header.is-condensed .nav {
   max-width: 920px;
   --nav-radius: 50px;
+  --nav-cta-radius: 999px;
   padding: 8px 12px 8px 18px;
   border-color: var(--border-strong);
   background: rgba(7, 11, 24, 0.78);
@@ -679,7 +693,7 @@ main,
   padding: 0 var(--s-4);
   font-size: 13px;
   font-weight: 650;
-  border-radius: var(--nav-radius);
+  border-radius: var(--nav-cta-radius);
 }
 
 .nav__toggle {
@@ -716,6 +730,7 @@ main,
   .site-header.is-condensed .nav {
     max-width: var(--well);
     --nav-radius: var(--r-lg);
+    --nav-cta-radius: calc(var(--nav-radius) - 12px);
     padding: 12px 20px;
   }
 
