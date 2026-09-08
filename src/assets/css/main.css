@@ -570,6 +570,16 @@ main,
   padding-inline: var(--s-4);
 }
 
+/* The nav CTA's corner radius is a registered property that lives on .nav, so
+   the pill's ONE transition below interpolates it along with everything else
+   and the button simply inherits the live value. The button has no transition
+   of its own for it, so the two shapes cannot desync. */
+@property --nav-cta-radius {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 6px;
+}
+
 /* ONE transition covering the whole morph, at one duration. */
 .nav {
   position: relative;
@@ -582,6 +592,9 @@ main,
   margin-inline: auto;
   padding: 12px 20px;
   border-radius: var(--r-lg);
+  /* Rest: pill radius minus the pill's vertical padding, so the CTA's curve
+     sits concentric inside it (18px - 12px = 6px). */
+  --nav-cta-radius: calc(var(--r-lg) - 12px);
   border: 1px solid var(--border);
   background: rgba(7, 11, 24, 0.55);
   backdrop-filter: saturate(180%) blur(20px);
@@ -593,6 +606,8 @@ main,
 .site-header.is-condensed .nav {
   max-width: 920px;
   border-radius: 50px;
+  /* Condensed: fully pill, like the 50px pill around it. */
+  --nav-cta-radius: 999px;
   padding: 8px 12px 8px 18px;
   border-color: var(--border-strong);
   background: rgba(7, 11, 24, 0.78);
@@ -667,7 +682,7 @@ main,
   padding: 0 var(--s-4);
   font-size: 13px;
   font-weight: 650;
-  border-radius: 999px;
+  border-radius: var(--nav-cta-radius);
 }
 
 .nav__toggle {
@@ -704,6 +719,7 @@ main,
   .site-header.is-condensed .nav {
     max-width: var(--well);
     border-radius: var(--r-lg);
+    --nav-cta-radius: calc(var(--r-lg) - 12px);
     padding: 12px 20px;
   }
 
