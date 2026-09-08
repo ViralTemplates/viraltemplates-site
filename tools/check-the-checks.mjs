@@ -91,6 +91,12 @@ const CASES = [
     expect: /white on the .* ramp/,
   },
   {
+    name: "the nav CTA radius rule losing the cascade to .btn is caught",
+    file: "src/assets/css/main.css",
+    apply: (s) => s.replace("\n.nav .nav__cta {", "\n.nav__cta {"),
+    expect: /nav CTA border-radius is won by \.btn/,
+  },
+  {
     name: "a star rating that disagrees with the data is caught",
     file: "src/_includes/components/stars.njk",
     apply: (s) => s.replace('style="--fill: {{ fillPercent }}%"', 'style="--fill: 100%"'),

@@ -327,6 +327,58 @@ for (const sel of [".btn--robux", ".btn--crypto"]) {
   else ok("no later rule re-declares color for " + sel);
 }
 
+// The nav CTA is <a class="btn btn--primary nav__cta"> inside .site-header >
+// .nav > .nav__end. Its radius rule once lost to .btn, later in the file at
+// equal specificity, so every radius change silently rendered at --r-sm. This
+// resolves the cascade for that element in the BUILT stylesheet: every rule
+// that matches it and sets border-radius is ranked by specificity then source
+// order, and the winner must be .nav .nav__cta reading var(--nav-cta-radius).
+{
+  const built = fs.readFileSync("_site/assets/css/main.css", "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+  const element = ["btn", "btn--primary", "nav__cta"];
+  const ancestors = [["site-header"], ["nav"], ["nav__end"]];
+  const compoundMatches = (compound, classes) => {
+    const parts = compound.match(/\.[A-Za-z0-9_-]+/g) || [];
+    if (!parts.length || parts.join("") !== compound) return false; // anything but bare classes: not this element
+    return parts.every((c) => classes.includes(c.slice(1)));
+  };
+  const matches = (selector) => {
+    const compounds = selector.trim().split(/\s*>\s*|\s+/).filter(Boolean);
+    if (!compoundMatches(compounds[compounds.length - 1], element)) return false;
+    let depth = 0;
+    for (const compound of compounds.slice(0, -1)) {
+      while (depth < ancestors.length && !compoundMatches(compound, ancestors[depth])) depth++;
+      if (depth === ancestors.length) return false;
+      depth++;
+    }
+    return true;
+  };
+  const candidates = [];
+  const ruleRe = /([^{}]+)\{([^{}]*)\}/g;
+  let m, index = 0;
+  while ((m = ruleRe.exec(built))) {
+    const radius = m[2].match(/(?:^|;)\s*border-radius\s*:\s*([^;]+)/);
+    if (!radius) continue;
+    for (const selector of m[1].split(",")) {
+      if (!matches(selector)) continue;
+      const specificity = (selector.match(/\./g) || []).length;
+      candidates.push({ selector: selector.trim().replace(/\s+/g, " "), value: radius[1].trim(), specificity, index });
+    }
+    index++;
+  }
+  if (expect(candidates.length, 2, "nav CTA border-radius candidates (.btn and .nav .nav__cta at least)")) {
+    const winner = candidates.reduce((best, c) =>
+      c.specificity > best.specificity || (c.specificity === best.specificity && c.index > best.index) ? c : best);
+    if (winner.selector !== ".nav .nav__cta") {
+      bad("nav CTA border-radius is won by " + winner.selector + " (" + winner.value + "), not .nav .nav__cta — the CTA radius rule is being overridden");
+    } else if (winner.value !== "var(--nav-cta-radius)") {
+      bad("nav CTA border-radius resolves to " + winner.value + ", expected var(--nav-cta-radius)");
+    } else {
+      ok("nav CTA border-radius is won by .nav .nav__cta -> " + winner.value + " over " + (candidates.length - 1) + " other matching rule(s)");
+    }
+  }
+}
+
 const glass = (css.match(/backdrop-filter/g) || []).length;
 if (glass > 10) bad(glass + " backdrop-filter declarations — more than the header, carousel arrows and buy bar need");
 else ok(glass + " backdrop-filter declarations (header, carousel arrows, buy bar)");

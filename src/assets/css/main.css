@@ -687,8 +687,10 @@ main,
   background: rgba(18, 70, 242, 0.12);
 }
 
-/* The small gradient pill. */
-.nav__cta {
+/* The small gradient pill. Scoped under .nav so it out-ranks .btn (which is
+   later in the file at equal specificity and would otherwise win every
+   declaration here, border-radius included). */
+.nav .nav__cta {
   min-height: 36px;
   padding: 0 var(--s-4);
   font-size: 13px;
