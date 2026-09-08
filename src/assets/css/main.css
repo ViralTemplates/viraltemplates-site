@@ -496,13 +496,23 @@ main,
   max-width: none;
 }
 
+/* Any width-capped sub-line inside a page head is centred as a block, not
+   just its text: text-align on the parent centres the lines within the box,
+   but a max-width box with no auto margins still sits flush left. */
 .page-head .hero__sub,
-.page-head .pd__lead {
+.page-head .pd__lead,
+.page-head .sub {
   margin-inline: auto;
 }
 
 .section-head .sub {
   margin-top: var(--s-4);
+}
+
+/* The star row + count under a centred section heading is a flex row, so
+   text-align does nothing to it; centre the flex items themselves. */
+.section-head .rating {
+  justify-content: center;
 }
 
 /* h2 left, "View all ->" right. */
@@ -906,6 +916,13 @@ main,
   font-size: var(--fs-meta);
   font-weight: 500;
   color: var(--text-muted);
+}
+
+/* The Discord link under the form shares its corner radius with the form
+   fields above it (.field input / .field textarea use --r-sm). Pinned here,
+   scoped to this one button, so it cannot drift if .btn's radius changes. */
+.form__after .btn {
+  border-radius: var(--r-sm);
 }
 
 .btn[disabled],
