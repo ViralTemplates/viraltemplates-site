@@ -575,12 +575,10 @@ main,
    pill's single transition below interpolates them. The CTA reads the
    inherited live value and has no transition of its own, so it cannot desync.
 
-   The CTA is inset by the pill's vertical padding, so an equal radius reads
-   tighter than the pill's corner. The concentric value is outer radius minus
-   that gap:
-     rest       18px - 12px = 6px
-     condensed  50px -  8px = 42px, which exceeds half the 36px button height,
-                so it is floored to 999px: a pill stays a pill. */
+   The CTA's rest radius is NOT derived from the pill: neither the equal value
+   nor pill-minus-padding read right inside the inset. It is a literal tuned
+   by eye: --nav-cta-radius-rest in the .nav rule, the one number to change.
+   Condensed is 999px, a pill in a pill. */
 @property --nav-radius {
   syntax: "<length>";
   inherits: true;
@@ -590,7 +588,7 @@ main,
 @property --nav-cta-radius {
   syntax: "<length>";
   inherits: true;
-  initial-value: 6px;
+  initial-value: 12px;
 }
 
 /* ONE transition covering the whole morph, at one duration. */
@@ -606,7 +604,9 @@ main,
   padding: 12px 20px;
   --nav-radius: var(--r-lg);
   border-radius: var(--nav-radius);
-  --nav-cta-radius: calc(var(--nav-radius) - 12px);
+  /* Nav CTA rest radius. Tuned by eye, not derived. Change ONLY this number. */
+  --nav-cta-radius-rest: 12px;
+  --nav-cta-radius: var(--nav-cta-radius-rest);
   border: 1px solid var(--border);
   background: rgba(7, 11, 24, 0.55);
   backdrop-filter: saturate(180%) blur(20px);
@@ -730,7 +730,7 @@ main,
   .site-header.is-condensed .nav {
     max-width: var(--well);
     --nav-radius: var(--r-lg);
-    --nav-cta-radius: calc(var(--nav-radius) - 12px);
+    --nav-cta-radius: var(--nav-cta-radius-rest);
     padding: 12px 20px;
   }
 
