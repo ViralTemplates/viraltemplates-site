@@ -277,8 +277,12 @@ if (!bundle) {
     const alt = (img.match(/\salt="([^"]*)"/) || [])[1];
     let imgOk = true;
     if (!w || !h) { bad(slug + ": bundle image lacks explicit width/height"); imgOk = false; }
-    else if (realDims && (Number(w) !== realDims.width || Number(h) !== realDims.height)) {
-      bad(slug + ": bundle image is " + w + "x" + h + " in HTML but the file is " + realDims.width + "x" + realDims.height);
+    else if (Number(w) !== 96 || Number(h) !== 96) {
+      bad(slug + ": bundle image declares " + w + "x" + h + ", expected the 96x96 frame");
+      imgOk = false;
+    }
+    else if (realDims && (realDims.width !== 2 * Number(w) || realDims.height !== 2 * Number(h))) {
+      bad(slug + ": bundle image is " + w + "x" + h + " in HTML but the file is " + realDims.width + "x" + realDims.height + ", expected 2x for a sharp 96px frame");
       imgOk = false;
     }
     if (alt === undefined) { bad(slug + ": bundle image has no alt attribute"); imgOk = false; }
@@ -287,7 +291,11 @@ if (!bundle) {
     if (!/\sloading="lazy"/.test(img)) { bad(slug + ": bundle image is not lazy"); imgOk = false; }
     if (!img.includes("/assets/img/" + bundle.image + ".jpg")) { bad(slug + ": bundle <img> does not point at " + bundle.image + ".jpg"); imgOk = false; }
     if (!strip.includes("/assets/img/" + bundle.image + ".webp")) { bad(slug + ": bundle strip has no WebP source"); imgOk = false; }
-    if (imgOk) ok(slug + ": bundle image " + w + "x" + h + ", lazy, WebP + JPG, alt " + alt.trim().length + " chars");
+    // Both URLs carry the asset filter's content hash, so new artwork under the
+    // same name cannot be served stale from a cache.
+    const hashed = [...strip.matchAll(/\/assets\/img\/[^"\s]+\.(?:jpg|webp)(\?v=[0-9a-f]{8})?/g)];
+    if (hashed.length < 2 || hashed.some((m) => !m[1])) { bad(slug + ": bundle image URLs are not content-hashed"); imgOk = false; }
+    if (imgOk) ok(slug + ": bundle image " + w + "x" + h + " (file " + realDims.width + "x" + realDims.height + "), hashed URLs, lazy, WebP + JPG, alt " + alt.trim().length + " chars");
   }
   expect(checkedPages, BUNDLE_PAGES.length, "bundle strips inspected");
 

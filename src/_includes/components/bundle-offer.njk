@@ -6,15 +6,18 @@
     so the Jump page can never carry it. The buy link follows the same rule
     as buy-button.njk: href is derived from the same id as data-product.
 
+    The image URLs carry a content hash (the asset filter), so a redeploy
+    with new artwork cannot be served the old file from cache.
+
     Attention is a border and shadow loop only (see .bundle in main.css):
     nothing moves, nothing fades, no text animates. Expects `product`. -#}
 {%- set bundle = site.bundle -%}
 {%- if bundle and (product.slug in bundle.appliesTo) %}
 <section class="bundle" aria-labelledby="bundle-title" data-bundle="{{ bundle.payhipId }}">
   <picture class="bundle__media">
-    <source srcset="/assets/img/{{ bundle.image }}.webp" type="image/webp">
+    <source srcset="{{ ("/assets/img/" + bundle.image + ".webp") | asset }}" type="image/webp">
     <img class="bundle__img"
-         src="/assets/img/{{ bundle.image }}.jpg"
+         src="{{ ("/assets/img/" + bundle.image + ".jpg") | asset }}"
          width="{{ bundle.imageWidth }}" height="{{ bundle.imageHeight }}"
          alt="{{ bundle.imageAlt }}"
          loading="lazy"

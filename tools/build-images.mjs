@@ -19,8 +19,6 @@ const SHOTS = {
   "CartoonUiPackMain.jpg": "essential-cartoon-ui-1",
   "CartoonUiPack_2.jpg": "essential-cartoon-ui-2",
   "CartoonUiPack_3.jpg": "essential-cartoon-ui-3",
-  // Bundle strip thumbnail on the two UI pack pages (site.json "bundle").
-  "UltimateUiPack.jpg": "ultimate-ui-pack",
 };
 
 
@@ -34,6 +32,18 @@ for (const [name, base] of Object.entries(SHOTS)) {
   await img.clone().webp({ quality: 80, effort: 6 })
     .toFile(path.join(OUT, `${base}.webp`));
   console.log(`${src} -> ${base}.{jpg,webp} (${width}x${height})`);
+}
+
+// Bundle strip thumbnail (site.json "bundle"): the 512px square master goes
+// out at 192x192, which is 2x the 96px frame it renders in, so nothing crops.
+{
+  const bundleSrc = path.join(SRC, "SmallerLogoUltimate.jpg");
+  const thumb = sharp(bundleSrc).resize(192, 192, { fit: "cover" });
+  await thumb.clone().jpeg({ quality: 82, mozjpeg: true, chromaSubsampling: "4:4:4" })
+    .toFile(path.join(OUT, "ultimate-ui-pack.jpg"));
+  await thumb.clone().webp({ quality: 80, effort: 6 })
+    .toFile(path.join(OUT, "ultimate-ui-pack.webp"));
+  console.log("SmallerLogoUltimate.jpg -> ultimate-ui-pack.{jpg,webp} (192x192)");
 }
 
 // Open Graph card: already 1200x630, just re-encode to trim weight.

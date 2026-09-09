@@ -135,10 +135,10 @@ const CASES = [
     expect: /bundle image alt is empty/,
   },
   {
-    name: "a bundle image with wrong explicit dimensions is caught",
+    name: "a bundle image declaring the file size instead of the frame is caught",
     file: "src/_includes/components/bundle-offer.njk",
-    apply: (s) => s.replace('width="{{ bundle.imageWidth }}"', 'width="96"'),
-    expect: /bundle image is 96x\d+ in HTML but the file is/,
+    apply: (s) => s.replace('width="{{ bundle.imageWidth }}"', 'width="192"'),
+    expect: /bundle image declares 192x96, expected the 96x96 frame/,
   },
 ];
 
