@@ -4,6 +4,7 @@ import sharp from "sharp";
 import { existsSync, mkdirSync } from "node:fs";
 import path from "node:path";
 
+const SRC = "_source-images";
 const OUT = "src/assets/img";
 mkdirSync(OUT, { recursive: true });
 
@@ -18,10 +19,13 @@ const SHOTS = {
   "CartoonUiPackMain.jpg": "essential-cartoon-ui-1",
   "CartoonUiPack_2.jpg": "essential-cartoon-ui-2",
   "CartoonUiPack_3.jpg": "essential-cartoon-ui-3",
+  // Bundle strip thumbnail on the two UI pack pages (site.json "bundle").
+  "UltimateUiPack.jpg": "ultimate-ui-pack",
 };
 
 
-for (const [src, base] of Object.entries(SHOTS)) {
+for (const [name, base] of Object.entries(SHOTS)) {
+  const src = path.join(SRC, name);
   if (!existsSync(src)) { console.warn(`skip (missing): ${src}`); continue; }
   const img = sharp(src);
   const { width, height } = await img.metadata();
@@ -33,12 +37,12 @@ for (const [src, base] of Object.entries(SHOTS)) {
 }
 
 // Open Graph card: already 1200x630, just re-encode to trim weight.
-await sharp("MainLogo.jpg").jpeg({ quality: 86, mozjpeg: true }).toFile(path.join(OUT, "og-default.jpg"));
+await sharp(path.join(SRC, "MainLogo.jpg")).jpeg({ quality: 86, mozjpeg: true }).toFile(path.join(OUT, "og-default.jpg"));
 console.log("MainLogo.jpg -> og-default.jpg");
 
 // Wordmark: transparent PNG, keep alpha. Header/footer use the small one.
-await sharp("MainVTLogo.png").png({ compressionLevel: 9, palette: true }).toFile(path.join(OUT, "vt-logo.png"));
-await sharp("MainVTLogo.png").resize({ width: 160 }).webp({ quality: 92, alphaQuality: 100 })
+await sharp(path.join(SRC, "MainVTLogo.png")).png({ compressionLevel: 9, palette: true }).toFile(path.join(OUT, "vt-logo.png"));
+await sharp(path.join(SRC, "MainVTLogo.png")).resize({ width: 160 }).webp({ quality: 92, alphaQuality: 100 })
   .toFile(path.join(OUT, "vt-logo.webp"));
 console.log("MainVTLogo.png -> vt-logo.{png,webp}");
 

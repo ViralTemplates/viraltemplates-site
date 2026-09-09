@@ -1,0 +1,47 @@
+{#- Bundle promo strip. Not a product: no card in the grid, no page, no nav
+    link, no sitemap entry, no JSON-LD. Every value comes from site.json
+    "bundle"; the price, saving and Payhip id are never typed here.
+
+    It renders only when the current product's slug is in bundle.appliesTo,
+    so the Jump page can never carry it. The buy link follows the same rule
+    as buy-button.njk: href is derived from the same id as data-product.
+
+    Attention is a border and shadow loop only (see .bundle in main.css):
+    nothing moves, nothing fades, no text animates. Expects `product`. -#}
+{%- set bundle = site.bundle -%}
+{%- if bundle and (product.slug in bundle.appliesTo) %}
+<section class="bundle" aria-labelledby="bundle-title" data-bundle="{{ bundle.payhipId }}">
+  <picture class="bundle__media">
+    <source srcset="/assets/img/{{ bundle.image }}.webp" type="image/webp">
+    <img class="bundle__img"
+         src="/assets/img/{{ bundle.image }}.jpg"
+         width="{{ bundle.imageWidth }}" height="{{ bundle.imageHeight }}"
+         alt="{{ bundle.imageAlt }}"
+         loading="lazy"
+         decoding="async">
+  </picture>
+
+  <div class="bundle__body">
+    <h2 class="bundle__title" id="bundle-title">Get both UI packs</h2>
+    <p class="bundle__sub">Stud and Cartoon together, one download.</p>
+  </div>
+
+  <div class="bundle__offer">
+    <p class="bundle__price">
+      {{ bundle.price }}
+      <s class="bundle__was">{{ bundle.wasPrice }}</s>
+    </p>
+    <span class="badge-sale bundle__saving">{{ bundle.saving }}</span>
+    <a class="btn btn--primary payhip-buy-button bundle__btn"
+       data-product="{{ bundle.payhipId }}"
+       data-theme="none"
+       href="https://payhip.com/buy?link={{ bundle.payhipId }}">
+      Buy the bundle
+      <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M2 8h11M9 4l4 4-4 4"/>
+      </svg>
+    </a>
+  </div>
+</section>
+{%- endif %}

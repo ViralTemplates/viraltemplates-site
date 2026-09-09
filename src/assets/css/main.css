@@ -2318,6 +2318,115 @@ html.js .spark__dot::after {
   font-size: 13px;
 }
 
+/* --- Bundle strip (site.json "bundle") --- */
+
+/* First row of the .pd grid, spanning both columns. Attention comes from the
+   border and shadow breathing between two cyan alphas: nothing translates,
+   nothing changes opacity, no text animates, so WCAG 2.3.1 is not in play. */
+@keyframes bundle-breathe {
+  from {
+    border-color: rgba(28, 209, 252, 0.18);
+    box-shadow: var(--highlight), 0 0 28px -6px rgba(28, 209, 252, 0.18);
+  }
+  to {
+    border-color: rgba(28, 209, 252, 0.55);
+    box-shadow: var(--highlight), 0 0 28px -6px rgba(28, 209, 252, 0.55);
+  }
+}
+
+.bundle {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--s-6);
+  padding: var(--s-5) var(--s-6);
+  background-color: var(--surface-raised);
+  background-image: var(--panel);
+  border: 1px solid rgba(28, 209, 252, 0.18);
+  border-radius: var(--r-lg);
+  box-shadow: var(--highlight), 0 0 28px -6px rgba(28, 209, 252, 0.18);
+  animation: bundle-breathe 2400ms ease-in-out infinite alternate;
+}
+
+.bundle__media {
+  display: block;
+  width: 96px;
+  height: 96px;
+  flex: none;
+}
+
+.bundle__img {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: var(--r-md);
+  display: block;
+}
+
+.bundle__title {
+  font-size: var(--fs-sect);
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+.bundle__sub {
+  margin-top: var(--s-1);
+  color: var(--text-muted);
+  font-size: var(--fs-meta);
+  line-height: 1.5;
+}
+
+.bundle__offer {
+  display: grid;
+  justify-items: end;
+  gap: var(--s-3);
+  text-align: right;
+}
+
+.bundle__price {
+  font-family: var(--font-price);
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -1px;
+  line-height: 1.1;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+}
+
+.bundle__was {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--danger);
+  text-decoration: line-through;
+}
+
+@media (max-width: 720px) {
+  .bundle {
+    grid-template-columns: 1fr;
+    justify-items: start;
+    gap: var(--s-4);
+    padding: var(--s-5);
+  }
+
+  .bundle__offer {
+    width: 100%;
+    justify-items: start;
+    text-align: left;
+  }
+
+  .bundle__btn {
+    width: 100%;
+  }
+}
+
 /* --- Mobile buy bar --- */
 
 .buybar {
@@ -2931,6 +3040,12 @@ html.js .reveal.is-in {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  .bundle {
+    animation: none;
+    border-color: rgba(28, 209, 252, 0.55);
+    box-shadow: var(--highlight), 0 0 28px -6px rgba(28, 209, 252, 0.55);
   }
 
   /* The marquee becomes a static wrapped grid, not a frozen overflowing strip. */

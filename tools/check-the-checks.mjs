@@ -102,6 +102,44 @@ const CASES = [
     apply: (s) => s.replace('style="--fill: {{ fillPercent }}%"', 'style="--fill: 100%"'),
     expect: /star fill 100%, expected 98%/,
   },
+  {
+    name: "the bundle strip leaking onto a page outside appliesTo is caught",
+    file: "src/_includes/components/bundle-offer.njk",
+    apply: (s) => s.replace("{%- if bundle and (product.slug in bundle.appliesTo) %}", "{%- if bundle %}"),
+    expect: /bundle strip rendered on \/jump-for-template\//,
+  },
+  {
+    name: "a third slug added to bundle appliesTo is caught",
+    file: "src/_data/site.json",
+    apply: (s) => s.replace('"appliesTo": ["essential-stud-ui", "essential-cartoon-ui"]', '"appliesTo": ["essential-stud-ui", "essential-cartoon-ui", "jump-for-template"]'),
+    expect: /bundle appliesTo is \[.*\], expected exactly the two UI pack slugs/,
+  },
+  {
+    // Both attributes move together, so the generic href-equals-id rule in
+    // check-build stays green and it is the bundle rule that has to bite.
+    name: "a bundle buy button wired to another product's id is caught",
+    file: "src/_includes/components/bundle-offer.njk",
+    apply: (s) => s.split("{{ bundle.payhipId }}").join("0hoa7"),
+    expect: /bundle buy button data-product is 0hoa7/,
+  },
+  {
+    name: "a hardcoded bundle price in a template is caught",
+    file: "src/_includes/components/bundle-offer.njk",
+    apply: (s) => s.replace("{{ bundle.price }}", "$29.99"),
+    expect: /bundle price hardcoded: "\$29\.99" in src/,
+  },
+  {
+    name: "a bundle image with empty alt is caught",
+    file: "src/_includes/components/bundle-offer.njk",
+    apply: (s) => s.replace('alt="{{ bundle.imageAlt }}"', 'alt=""'),
+    expect: /bundle image alt is empty/,
+  },
+  {
+    name: "a bundle image with wrong explicit dimensions is caught",
+    file: "src/_includes/components/bundle-offer.njk",
+    apply: (s) => s.replace('width="{{ bundle.imageWidth }}"', 'width="96"'),
+    expect: /bundle image is 96x\d+ in HTML but the file is/,
+  },
 ];
 
 let passed = 0;

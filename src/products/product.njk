@@ -23,6 +23,9 @@ eleventyComputed:
     </div>
 
     <div class="pd">
+      {#- Bundle strip: only when this slug is in site.bundle.appliesTo. -#}
+      {% include "components/bundle-offer.njk" %}
+
       <div class="pd__main">
         <div class="section-head" style="margin-bottom: 0">
           <h2 class="h2" id="ship-title">Everything you need to ship.</h2>

@@ -192,6 +192,130 @@ for (const product of products) {
   if (FIVE_RE.test(page.html)) bad(name + ": renders 5/5 somewhere");
 }
 
+// --- bundle offer ----------------------------------------------------------
+
+// The Stud + Cartoon bundle strip is data in site.json, not a product: it
+// renders on exactly the two UI pack pages, nowhere else, buys the bundle's
+// own Payhip id, and carries no hardcoded price anywhere in the templates.
+console.log("\nBUNDLE OFFER");
+const site = JSON.parse(fs.readFileSync("src/_data/site.json", "utf8"));
+const bundle = site.bundle;
+const BUNDLE_PAGES = ["essential-stud-ui", "essential-cartoon-ui"];
+if (!bundle) {
+  bad("site.json has no bundle object");
+} else {
+  const applies = [...(bundle.appliesTo || [])].sort();
+  if (applies.join(",") !== [...BUNDLE_PAGES].sort().join(",")) {
+    bad("bundle appliesTo is [" + applies.join(", ") + "], expected exactly the two UI pack slugs");
+  } else {
+    ok("bundle appliesTo is exactly the two UI pack slugs");
+  }
+
+  const wantHref = "https://payhip.com/buy?link=" + bundle.payhipId;
+  if (bundle.url !== wantHref) bad("bundle url in site.json is " + bundle.url + ", expected " + wantHref);
+  else ok("bundle url matches its payhipId");
+
+  // Presence: one <section class="bundle"> on each applies-to page and none on
+  // any other built page, product or not. Every page is visited, so a strip
+  // leaking onto the Jump page or the home page is reported by name.
+  let stripsSeen = 0;
+  for (const page of pages) {
+    const slug = page.name.split(/[\\/]/)[0];
+    const strips = page.html.split('<section class="bundle"').length - 1;
+    const want = BUNDLE_PAGES.includes(slug) && page.name.endsWith("index.html") ? 1 : 0;
+    stripsSeen += strips;
+    if (strips !== want) {
+      bad(want
+        ? "bundle strip missing on /" + slug + "/"
+        : "bundle strip rendered on /" + page.name.split("\\").join("/").replace(/index\.html$/, "") + " (" + strips + "x)");
+    }
+  }
+  if (stripsSeen === BUNDLE_PAGES.length) ok("bundle strip on exactly " + BUNDLE_PAGES.length + " pages: " + BUNDLE_PAGES.join(", "));
+  else bad("bundle strip rendered " + stripsSeen + " times site-wide, expected " + BUNDLE_PAGES.length);
+
+  // Wiring, price and image on each page that carries it.
+  const imgFile = "src/assets/img/" + bundle.image + ".jpg";
+  const webpFile = "src/assets/img/" + bundle.image + ".webp";
+  for (const f of [imgFile, webpFile]) if (!fs.existsSync(f)) bad("bundle image missing: " + f);
+  let realDims = null;
+  if (fs.existsSync(imgFile)) {
+    const sharp = (await import("sharp")).default;
+    const meta = await sharp(imgFile).metadata();
+    realDims = { width: meta.width, height: meta.height };
+  }
+  let checkedPages = 0;
+  for (const slug of BUNDLE_PAGES) {
+    const page = findPage(slug + "/index.html");
+    if (!page) { bad("expected page missing from build: " + slug); continue; }
+    if (!page.html.includes('<section class="bundle"')) continue; // reported above
+    const strip = slice(page.html, '<section class="bundle"', "</section>", { min: 400, max: 6000, label: slug + ": bundle strip" });
+    if (!strip) continue;
+    checkedPages++;
+
+    const btn = (strip.match(/<a[^>]*bundle__btn[^>]*>/) || [])[0];
+    if (!btn) { bad(slug + ": bundle strip has no bundle__btn anchor"); continue; }
+    const id = (btn.match(/data-product="([^"]*)"/) || [])[1];
+    const href = (btn.match(/href="([^"]*)"/) || [])[1];
+    if (id !== bundle.payhipId) bad(slug + ": bundle buy button data-product is " + id + ", expected " + bundle.payhipId);
+    if (href !== wantHref) bad(slug + ": bundle buy button href is " + href + ", expected " + wantHref);
+    if (!btn.includes("payhip-buy-button")) bad(slug + ": bundle buy button lacks the payhip-buy-button class");
+    if (!/data-theme="none"/.test(btn)) bad(slug + ": bundle buy button lacks data-theme=none");
+    if (id === bundle.payhipId && href === wantHref) ok(slug + ": bundle buy button -> " + href);
+
+    const flatStrip = strip.replace(/\s+/g, " ");
+    let figures = 0;
+    for (const [field, label] of [["price", "price"], ["wasPrice", "was-price"], ["saving", "saving"]]) {
+      if (flatStrip.includes(esc(bundle[field]))) figures++;
+      else bad(slug + ": bundle " + label + " " + bundle[field] + " from site.json not rendered");
+    }
+    if (figures === 3) ok(slug + ": renders " + bundle.price + ", " + bundle.wasPrice + " and \"" + bundle.saving + "\" from site.json");
+
+    const img = (strip.match(/<img\b[^>]*>/) || [])[0];
+    if (!img) { bad(slug + ": bundle strip has no <img>"); continue; }
+    const w = (img.match(/\swidth="(\d+)"/) || [])[1];
+    const h = (img.match(/\sheight="(\d+)"/) || [])[1];
+    const alt = (img.match(/\salt="([^"]*)"/) || [])[1];
+    let imgOk = true;
+    if (!w || !h) { bad(slug + ": bundle image lacks explicit width/height"); imgOk = false; }
+    else if (realDims && (Number(w) !== realDims.width || Number(h) !== realDims.height)) {
+      bad(slug + ": bundle image is " + w + "x" + h + " in HTML but the file is " + realDims.width + "x" + realDims.height);
+      imgOk = false;
+    }
+    if (alt === undefined) { bad(slug + ": bundle image has no alt attribute"); imgOk = false; }
+    else if (!alt.trim()) { bad(slug + ": bundle image alt is empty"); imgOk = false; }
+    else if (alt.trim().length < 40) { bad(slug + ": bundle image alt is a label, not a description: \"" + alt + "\""); imgOk = false; }
+    if (!/\sloading="lazy"/.test(img)) { bad(slug + ": bundle image is not lazy"); imgOk = false; }
+    if (!img.includes("/assets/img/" + bundle.image + ".jpg")) { bad(slug + ": bundle <img> does not point at " + bundle.image + ".jpg"); imgOk = false; }
+    if (!strip.includes("/assets/img/" + bundle.image + ".webp")) { bad(slug + ": bundle strip has no WebP source"); imgOk = false; }
+    if (imgOk) ok(slug + ": bundle image " + w + "x" + h + ", lazy, WebP + JPG, alt " + alt.trim().length + " chars");
+  }
+  expect(checkedPages, BUNDLE_PAGES.length, "bundle strips inspected");
+
+  // The bundle's figures live in site.json only. Any template, stylesheet or
+  // script carrying the literal price is a hardcode waiting to drift.
+  const sources = fs.readdirSync("src", { recursive: true }).map(String)
+    .filter((f) => /\.(njk|css|js|md|html)$/.test(f) && !f.startsWith("_data"));
+  expect(sources.length, 10, "source files scanned for a hardcoded bundle price");
+  const literals = [bundle.price, bundle.wasPrice, bundle.saving, bundle.price.replace("$", ""), bundle.wasPrice.replace("$", "")];
+  let hardcoded = 0;
+  for (const f of sources) {
+    const text = fs.readFileSync("src/" + f, "utf8");
+    for (const lit of literals) {
+      if (text.includes(lit)) { bad("bundle price hardcoded: \"" + lit + "\" in src/" + f.split("\\").join("/")); hardcoded++; }
+    }
+  }
+  if (!hardcoded) ok("bundle price, was-price and saving appear in no template, stylesheet or script");
+
+  // Not a product: no JSON-LD anywhere names it.
+  let ld = 0;
+  for (const page of pages) {
+    for (const [, body] of page.html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
+      if (body.includes(bundle.payhipId) || body.includes(bundle.name)) { bad(page.name + ": JSON-LD mentions the bundle"); ld++; }
+    }
+  }
+  if (!ld) ok("no JSON-LD block names the bundle");
+}
+
 // --- copy ------------------------------------------------------------------
 
 console.log("\nBANNED PHRASES AND PLACEHOLDER COPY");
@@ -419,7 +543,7 @@ if (/JetBrains|font-mono/.test(css) || /JetBrains/.test(inlineCss)) bad("JetBrai
 else ok("no JetBrains Mono reference in main.css or the inline critical CSS");
 if (!fs.existsSync("src/assets/fonts/Montserrat-Black.woff2")) bad("Montserrat-Black.woff2 missing");
 if (fs.existsSync("src/assets/fonts/JetBrainsMono-Variable.woff2")) bad("JetBrainsMono woff2 still shipped");
-const PRICE_SELECTORS = [".price__now", ".price__was", ".buypanel__price", ".pcard__price b", ".buybar__price"];
+const PRICE_SELECTORS = [".price__now", ".price__was", ".buypanel__price", ".pcard__price b", ".buybar__price", ".bundle__price"];
 for (const sel of PRICE_SELECTORS) {
   const body = rule(css, sel, "price font");
   if (!body) continue;
@@ -432,7 +556,7 @@ const priceUsers = [...css.matchAll(/([^{}]*)\{[^{}]*var\(--font-price\)/g)]
   .map((m) => m[1].trim().split("\n").pop().trim());
 const strayPrice = priceUsers.filter((s) => !PRICE_SELECTORS.includes(s));
 if (strayPrice.length) bad("--font-price used outside prices: " + strayPrice.join(", "));
-else ok("--font-price confined to the five price selectors");
+else ok("--font-price confined to the " + PRICE_SELECTORS.length + " price selectors");
 for (const sel of [".stat__figure", ".review__score"]) {
   const body = rule(css, sel, "figure font");
   if (!body) continue;
